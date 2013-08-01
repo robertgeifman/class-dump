@@ -1359,11 +1359,12 @@
 				SDKROOT = macosx;
 				WARNING_CFLAGS = (
 					"-fdiagnostics-show-option",
-					"-Weverything",
+					"-Wall",
 					"-Wno-semicolon-before-method-body",
 					"-Wno-c11-extensions",
 					"-Wno-readonly-setter-attrs",
 					"-Wno-overriding-method-mismatch",
+					"-Wno-unused-function",
 					"-Wno-unused-macros",
 					"-Wno-objc-missing-property-synthesis",
 				);
@@ -1390,11 +1391,12 @@
 				SDKROOT = macosx;
 				WARNING_CFLAGS = (
 					"-fdiagnostics-show-option",
-					"-Weverything",
+					"-Wall",
 					"-Wno-semicolon-before-method-body",
 					"-Wno-c11-extensions",
 					"-Wno-readonly-setter-attrs",
 					"-Wno-overriding-method-mismatch",
+					"-Wno-unused-function",
 					"-Wno-unused-macros",
 					"-Wno-objc-missing-property-synthesis",
 				);
