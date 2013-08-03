@@ -170,6 +170,7 @@
 		6DCC317B17AD265B000E4A23 /* CDSearchPathState.m in Sources */ = {isa = PBXBuildFile; fileRef = 01EB82FC13A591D8003EDE60 /* CDSearchPathState.m */; };
 		6DCC317F17AD2682000E4A23 /* ClassDump-Constants.h in Headers */ = {isa = PBXBuildFile; fileRef = 6DCC317D17AD2682000E4A23 /* ClassDump-Constants.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		6DCC318017AD2682000E4A23 /* ClassDump-Constants.m in Sources */ = {isa = PBXBuildFile; fileRef = 6DCC317E17AD2682000E4A23 /* ClassDump-Constants.m */; };
+		6DEA956817AD767A002D079A /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 6DEA956617AD767A002D079A /* Localizable.strings */; };
 		DA7533B213AA587A003BE32C /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 01EB826313A590D9003EDE60 /* Foundation.framework */; };
 /* End PBXBuildFile section */
 
@@ -470,6 +471,7 @@
 		6DCC315F17AD259F000E4A23 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = Framework/Info.plist; sourceTree = SOURCE_ROOT; };
 		6DCC317D17AD2682000E4A23 /* ClassDump-Constants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "ClassDump-Constants.h"; path = "Framework/ClassDump-Constants.h"; sourceTree = SOURCE_ROOT; usesTabs = 1; };
 		6DCC317E17AD2682000E4A23 /* ClassDump-Constants.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "ClassDump-Constants.m"; path = "Framework/ClassDump-Constants.m"; sourceTree = SOURCE_ROOT; usesTabs = 1; };
+		6DEA956717AD767A002D079A /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = Framework/en.lproj/Localizable.strings; sourceTree = SOURCE_ROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -939,6 +941,7 @@
 			children = (
 				6DCC315F17AD259F000E4A23 /* Info.plist */,
 				6DCC315D17AD259F000E4A23 /* InfoPlist.strings */,
+				6DEA956617AD767A002D079A /* Localizable.strings */,
 			);
 			name = "Supporting Files";
 			sourceTree = "<group>";
@@ -1150,6 +1153,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				6DCC316217AD259F000E4A23 /* InfoPlist.strings in Resources */,
+				6DEA956817AD767A002D079A /* Localizable.strings in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1379,6 +1383,14 @@
 				6DCC315E17AD259F000E4A23 /* en */,
 			);
 			name = InfoPlist.strings;
+			sourceTree = "<group>";
+		};
+		6DEA956617AD767A002D079A /* Localizable.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				6DEA956717AD767A002D079A /* en */,
+			);
+			name = Localizable.strings;
 			sourceTree = "<group>";
 		};
 /* End PBXVariantGroup section */
