@@ -1691,6 +1691,10 @@
 					"$(DEVELOPER_DIR)/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.9.sdk/usr/lib",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 10.8;
+				OTHER_LDFLAGS = (
+					"-all_load",
+					"-ObjC",
+				);
 				PRODUCT_NAME = ClassDump;
 				SKIP_INSTALL = YES;
 				WRAPPER_EXTENSION = framework;
@@ -1727,6 +1731,10 @@
 					"$(DEVELOPER_DIR)/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.9.sdk/usr/lib",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 10.8;
+				OTHER_LDFLAGS = (
+					"-all_load",
+					"-ObjC",
+				);
 				PRODUCT_NAME = ClassDump;
 				SKIP_INSTALL = YES;
 				WRAPPER_EXTENSION = framework;
