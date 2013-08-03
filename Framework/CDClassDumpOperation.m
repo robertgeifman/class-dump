@@ -54,7 +54,7 @@
 	if (executablePath == nil) {
 		NSDictionary *userInfo = @{
 			NSLocalizedDescriptionKey : NSLocalizedStringFromTableInBundle(@"The input file doesn\u2019t contain an executable", nil, [NSBundle bundleWithIdentifier:CDClassDumpBundleIdentifier], @"CDClassDumpOperation input file not executable error description"),
-			NSLocalizedRecoverySuggestionErrorKey : NSLocalizedStringFromTableInBundle(@"Please make sure that the file that you have selected is an executable, a framework or an application bundle.", nil, [NSBundle bundleWithIdentifier:CDClassDumpBundleIdentifier], @"CDClassDumpOperation input file not executable error recovery suggestion"),
+			NSLocalizedRecoverySuggestionErrorKey : NSLocalizedStringFromTableInBundle(@"Please make sure that the file you have selected is an executable, a framework or an application bundle.", nil, [NSBundle bundleWithIdentifier:CDClassDumpBundleIdentifier], @"CDClassDumpOperation input file not executable error recovery suggestion"),
 		};
 		NSError *error = [NSError errorWithDomain:CDClassDumpErrorDomain code:CDClassDumpErrorExecutableNotFound userInfo:userInfo];
 		

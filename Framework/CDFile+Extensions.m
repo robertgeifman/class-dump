@@ -10,7 +10,7 @@
 
 #import "ClassDump-Constants.h"
 
-#define CDFileRecoverySuggestion	NSLocalizedStringFromTableInBundle(@"Please make sure that the file that you have selected is an executable, a framework or an application bundle.", nil, [NSBundle bundleWithIdentifier:CDClassDumpBundleIdentifier], @"CDFile+Extensions input file not executable error recovery suggestion")
+#define CDFileRecoverySuggestion	NSLocalizedStringFromTableInBundle(@"Please make sure that the file you have selected is an executable, a framework or an application bundle.", nil, [NSBundle bundleWithIdentifier:CDClassDumpBundleIdentifier], @"CDFile+Extensions input file not executable error recovery suggestion")
 
 @implementation CDFile (Extensions)
 
