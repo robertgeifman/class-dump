@@ -8,6 +8,6 @@
 
 #import "ClassDump-Constants.h"
 
-NSString * const CDClassDumpBundleIdentifier = @"com.ddeville.classdump";
+NSString * const CDClassDumpServiceBundleIdentifier = @"com.ddeville.classdumpservice";
 
-NSString * const CDClassDumpErrorDomain = @"com.ddeville.classdump";
+NSString * const CDClassDumpServiceName = @"com.ddeville.classdumpservice";

@@ -23,6 +23,8 @@ typedef NS_ENUM(NSInteger, CDClassDumpErrorCode) {
 	CDClassDumpErrorFileLoading = -300,
 	
 	CDClassDumpErrorExportDirectoryCreationError = -400,
+	
+	CDClassDumpErrorXPCService = -500,
 };
 
 extern NSString * const CDClassDumpErrorDomain;

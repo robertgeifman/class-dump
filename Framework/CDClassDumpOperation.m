@@ -8,19 +8,23 @@
 
 #import "CDClassDumpOperation.h"
 
-#import "CDClassDump.h"
-#import "CDSearchPathState.h"
-#import "CDMultiFileVisitor.h"
-
-#import "CDFile+Extensions.h"
-#import "CDClassDump+Extensions.h"
+#import "_CDClassDumpServerInterface.h"
 
 #import "ClassDump-Constants.h"
+#import "ClassDumpService-Constants.h"
 
 @interface CDClassDumpOperation ()
 
 @property (copy, nonatomic) NSURL *bundleOrExecutableLocation;
 @property (copy, nonatomic) NSURL *exportDirectoryLocation;
+
+@property (strong, nonatomic) NSXPCConnection *connection;
+
+@end
+
+@interface CDClassDumpOperation (/* NSOperation */)
+
+@property (assign, nonatomic) BOOL isExecuting, isFinished;
 
 @property (readwrite, copy, atomic) NSURL * (^completionProvider)(NSError **errorRef);
 
@@ -41,144 +45,87 @@
 	NSParameterAssert(exportDirectoryLocation != nil);
 	_exportDirectoryLocation = [exportDirectoryLocation copy];
 	
+	NSXPCConnection *connection = [[NSXPCConnection alloc] initWithServiceName:CDClassDumpServiceName];
+	[self setConnection:connection];
+	
+	NSXPCInterface *classDumpServerInterface = [NSXPCInterface interfaceWithProtocol:@protocol(_CDClassDumpServerInterface)];
+	[classDumpServerInterface setClasses:[NSSet setWithObjects:[NSURL class], nil] forSelector:@selector(classDumpBundleOrExecutableAtLocation:exportDirectoryLocation:response:) argumentIndex:0 ofReply:NO];
+	[classDumpServerInterface setClasses:[NSSet setWithObjects:[NSURL class], nil] forSelector:@selector(classDumpBundleOrExecutableAtLocation:exportDirectoryLocation:response:) argumentIndex:1 ofReply:NO];
+	[classDumpServerInterface setClasses:[NSSet setWithObjects:[NSURL class], nil] forSelector:@selector(classDumpBundleOrExecutableAtLocation:exportDirectoryLocation:response:) argumentIndex:0 ofReply:YES];
+	[classDumpServerInterface setClasses:[NSSet setWithObjects:[NSError class], nil] forSelector:@selector(classDumpBundleOrExecutableAtLocation:exportDirectoryLocation:response:) argumentIndex:1 ofReply:YES];
+	
+	[connection setRemoteObjectInterface:classDumpServerInterface];
+	[connection resume];
+	
 	return self;
 }
 
-- (void)main
+- (BOOL)isConcurrent
 {
-	NSError *executablePathRetrievalError = nil;
-	NSString *executablePath = [self _retrieveExecutablePath:&executablePathRetrievalError];
-	if (executablePath == nil) {
-		[self _completeWithError:executablePathRetrievalError];
-		return;
-	}
-	
-	NSError *exportDirectoryCreationError = nil;
-	NSString *exportDirectoryPath = [self _retrieveExportDirectoryPath:&exportDirectoryCreationError];
-	if (exportDirectoryPath == nil) {
-		[self _completeWithError:exportDirectoryCreationError];
-		return;
-	}
-	
-	[self _classDumpWithExecutablePath:executablePath exportDirectoryPath:exportDirectoryPath];
+	return YES;
 }
 
-#pragma mark - Class dump
-
-- (void)_classDumpWithExecutablePath:(NSString *)executablePath exportDirectoryPath:(NSString *)exportDirectoryPath
+- (void)start
 {
-	CDClassDump *classDump = [[CDClassDump alloc] init];
+	void (^setExecuting)(BOOL) = ^ void (BOOL executing) {
+		[self willChangeValueForKey:@"isExecuting"];
+		[self setIsExecuting:executing];
+		[self didChangeValueForKey:@"isExecuting"];
+	};
 	
-	[[classDump searchPathState] setExecutablePath:[executablePath stringByDeletingLastPathComponent]];
-    
-	NSError *fileOpeningError = nil;
-	CDFile *file = [CDFile fileWithContentsOfFile:executablePath searchPathState:[classDump searchPathState] error:&fileOpeningError];
-	if (file == nil) {
-		[self _completeWithError:fileOpeningError];
+	void (^setFinished)(BOOL) = ^ void (BOOL finished) {
+		[self willChangeValueForKey:@"isFinished"];
+		[self setIsFinished:finished];
+		[self didChangeValueForKey:@"isFinished"];
+	};
+	
+	if ([self isCancelled]) {
+		setFinished(YES);
 		return;
 	}
 	
-	CDArch targetArchitecture;
-	NSError *architectureRetrievalError = nil;
-	BOOL architectureRetrieved = [file bestMatchForArch:&targetArchitecture error:&architectureRetrievalError];
-	if (!architectureRetrieved) {
-		[self _completeWithError:architectureRetrievalError];
-		return;
-	}
+	setExecuting(YES);
 	
-	[classDump setTargetArch:targetArchitecture];
-	
-	NSError *fileLoadingError = nil;
-	BOOL fileLoaded = [classDump fmw_loadFile:file error:&fileLoadingError];
-	if (!fileLoaded) {
-		[self _completeWithError:fileLoadingError];
-		return;
-	}
-	
-	[classDump processObjectiveCData];
-	[classDump registerTypes];
-	
-	if (![classDump hasObjectiveCRuntimeInfo]) {
-		NSDictionary *userInfo = @{
-			NSLocalizedDescriptionKey : NSLocalizedStringFromTableInBundle(@"The executable doesn\u2019 contain any Objective-C runtime information", nil, [NSBundle bundleWithIdentifier:CDClassDumpBundleIdentifier], @"CDClassDumpOperation no objc runtime info error description"),
-			NSLocalizedRecoverySuggestionErrorKey : NSLocalizedStringFromTableInBundle(@"Please make sure that the executable you have selected contains Objective-C runtime information.", nil, [NSBundle bundleWithIdentifier:CDClassDumpBundleIdentifier], @"CDClassDumpOperation no objc runtime info error recovery suggestion"),
-		};
-		NSError *error = [NSError errorWithDomain:CDClassDumpErrorDomain code:CDClassDumpErrorExecutableNoObjCRuntimeInfo userInfo:userInfo];
+	[self _doAsynchronousWorkWithReacquirer:^ {
+		setExecuting(NO);
+		setFinished(YES);
+	}];
+}
+
+- (void)_doAsynchronousWorkWithReacquirer:(void (^)(void))reacquirer
+{
+	id <_CDClassDumpServerInterface> classDumpServer = [[self connection] remoteObjectProxyWithErrorHandler:^ (NSError *error) {
+		NSError *classDumpError = [self _remoteProxyObjectError:error];
+		[self setCompletionProvider:^ id (NSError **errorRef) {
+			if (errorRef != NULL) {
+				*errorRef = classDumpError;
+			}
+			return nil;
+		}];
 		
-		[self _completeWithError:error];
-		return;
-	}
+		reacquirer();
+	}];
 	
-	CDMultiFileVisitor *multiFileVisitor = [[CDMultiFileVisitor alloc] init];
-	[multiFileVisitor setClassDump:classDump];
-	[multiFileVisitor setOutputPath:exportDirectoryPath];
-	
-	[[classDump typeController] setDelegate:multiFileVisitor];
-	
-	[classDump recursivelyVisit:multiFileVisitor];
-	
-	[self _completeWithExportDirectoryLocation:[self exportDirectoryLocation]];
-}
-
-#pragma mark - Path retrieval
-
-- (NSString *)_retrieveExecutablePath:(NSError **)errorRef
-{
-	NSString *bundleOrExecutablePath = [[self bundleOrExecutableLocation] path];
-	NSString *executablePath = [bundleOrExecutablePath executablePathForFilename];
-	
-	if (executablePath != nil) {
-		return executablePath;
-	}
-	
-	if (errorRef != NULL) {
-		NSDictionary *userInfo = @{
-			NSLocalizedDescriptionKey : NSLocalizedStringFromTableInBundle(@"The input file doesn\u2019t contain an executable", nil, [NSBundle bundleWithIdentifier:CDClassDumpBundleIdentifier], @"CDClassDumpOperation input file not executable error description"),
-			NSLocalizedRecoverySuggestionErrorKey : NSLocalizedStringFromTableInBundle(@"Please make sure that the file you have selected is an executable, a framework or an application bundle.", nil, [NSBundle bundleWithIdentifier:CDClassDumpBundleIdentifier], @"CDClassDumpOperation input file not executable error recovery suggestion"),
-		};
-		*errorRef = [NSError errorWithDomain:CDClassDumpErrorDomain code:CDClassDumpErrorExecutableNotFound userInfo:userInfo];
-	}
-	
-	return nil;
-}
-
-- (NSString *)_retrieveExportDirectoryPath:(NSError **)errorRef
-{
-	NSError *exportDirectoryCreationError = nil;
-	BOOL exportDirectoryCreated = [[NSFileManager defaultManager] createDirectoryAtURL:[self exportDirectoryLocation] withIntermediateDirectories:YES attributes:nil error:&exportDirectoryCreationError];
-	if (exportDirectoryCreated) {
-		return [[self exportDirectoryLocation] path];
-	}
-	
-	if (errorRef != NULL) {
-		NSDictionary *userInfo = @{
-			NSLocalizedDescriptionKey : NSLocalizedStringFromTableInBundle(@"Couldn\u2019t create the export directory", nil, [NSBundle bundleWithIdentifier:CDClassDumpBundleIdentifier], @"CDClassDumpOperation export directory creation error description"),
-			NSLocalizedRecoverySuggestionErrorKey : NSLocalizedStringFromTableInBundle(@"There was an unknown error while creating the export directory. Please try again.", nil, [NSBundle bundleWithIdentifier:CDClassDumpBundleIdentifier], @"CDClassDumpOperation export directory creation error recovery suggestion"),
-			NSUnderlyingErrorKey : exportDirectoryCreationError,
-		};
-		*errorRef = [NSError errorWithDomain:CDClassDumpErrorDomain code:CDClassDumpErrorExportDirectoryCreationError userInfo:userInfo];
-	}
-	
-	return NO;
-}
-
-#pragma mark - Completion
-
-- (void)_completeWithError:(NSError *)error
-{
-	[self setCompletionProvider:^ NSURL * (NSError **errorRef) {
-		if (errorRef != NULL) {
-			*errorRef = error;
-		}
-		return nil;
+	[classDumpServer classDumpBundleOrExecutableAtLocation:[self bundleOrExecutableLocation] exportDirectoryLocation:[self exportDirectoryLocation] response:^ (NSURL *exportDirectoryLocation, NSError *error) {
+		[self setCompletionProvider:^ NSURL * (NSError **errorRef) {
+			if (errorRef != NULL) {
+				*errorRef = error;
+			}
+			return exportDirectoryLocation;
+		}];
+		
+		reacquirer();
 	}];
 }
 
-- (void)_completeWithExportDirectoryLocation:(NSURL *)exportDirectoryLocation
+- (NSError *)_remoteProxyObjectError:(NSError *)error
 {
-	[self setCompletionProvider:^ NSURL * (NSError **errorRef) {
-		return exportDirectoryLocation;
-	}];
+	NSDictionary *userInfo = @{
+		NSLocalizedDescriptionKey : NSLocalizedStringFromTableInBundle(@"Couldn\u2019t complete class-dump for this executable", nil, [NSBundle bundleWithIdentifier:CDClassDumpBundleIdentifier], @"CDClassDumpOperation XPC error description"),
+		NSLocalizedRecoverySuggestionErrorKey : NSLocalizedStringFromTableInBundle(@"There was an unknown error when talking to a helper application.", nil, [NSBundle bundleWithIdentifier:CDClassDumpBundleIdentifier], @"CDClassDumpOperation XPC error recovery suggestion"),
+		NSUnderlyingErrorKey : error,
+	};
+	return [NSError errorWithDomain:CDClassDumpErrorDomain code:CDClassDumpErrorXPCService userInfo:userInfo];
 }
 
 @end
