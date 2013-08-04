@@ -95,10 +95,10 @@
 	[self setConnection:connection];
 	
 	NSXPCInterface *classDumpServerInterface = [NSXPCInterface interfaceWithProtocol:@protocol(CDClassDumpServerInterface)];
-	[classDumpServerInterface setClasses:[NSSet setWithObjects:[NSURL class], nil] forSelector:@selector(classDumpBundleOrExecutableAtLocation:exportDirectoryBookmarkData:response:) argumentIndex:0 ofReply:NO];
-	[classDumpServerInterface setClasses:[NSSet setWithObjects:[NSData class], nil] forSelector:@selector(classDumpBundleOrExecutableAtLocation:exportDirectoryBookmarkData:response:) argumentIndex:1 ofReply:NO];
-	[classDumpServerInterface setClasses:[NSSet setWithObjects:[NSURL class], nil] forSelector:@selector(classDumpBundleOrExecutableAtLocation:exportDirectoryBookmarkData:response:) argumentIndex:0 ofReply:YES];
-	[classDumpServerInterface setClasses:[NSSet setWithObjects:[NSError class], nil] forSelector:@selector(classDumpBundleOrExecutableAtLocation:exportDirectoryBookmarkData:response:) argumentIndex:1 ofReply:YES];
+	[classDumpServerInterface setClasses:[NSSet setWithObjects:[NSData class], nil] forSelector:@selector(classDumpBundleOrExecutableBookmarkData:exportDirectoryBookmarkData:response:) argumentIndex:0 ofReply:NO];
+	[classDumpServerInterface setClasses:[NSSet setWithObjects:[NSData class], nil] forSelector:@selector(classDumpBundleOrExecutableBookmarkData:exportDirectoryBookmarkData:response:) argumentIndex:1 ofReply:NO];
+	[classDumpServerInterface setClasses:[NSSet setWithObjects:[NSNumber class], nil] forSelector:@selector(classDumpBundleOrExecutableBookmarkData:exportDirectoryBookmarkData:response:) argumentIndex:0 ofReply:YES];
+	[classDumpServerInterface setClasses:[NSSet setWithObjects:[NSError class], nil] forSelector:@selector(classDumpBundleOrExecutableBookmarkData:exportDirectoryBookmarkData:response:) argumentIndex:1 ofReply:YES];
 	
 	[connection setRemoteObjectInterface:classDumpServerInterface];
 	[connection resume];
@@ -106,12 +106,28 @@
 
 - (void)_doAsynchronousWorkWithReacquirer:(void (^)(void))reacquirer
 {
-	NSError *bookmarkDataCreationError = nil;
-	NSData *exportDirectoryBookmarkData = [self _createExportDirectoryBookmarkData:&bookmarkDataCreationError];
+	NSURL *bundleOrExecutableLocation = [self bundleOrExecutableLocation];
+	
+	NSError *bundleOrExecutableBookmarkDataCreationError = nil;
+	NSData *bundleOrExecutableBookmarkData = [self _createBundleOrExecutableBookmarkData:bundleOrExecutableLocation error:&bundleOrExecutableBookmarkDataCreationError];
+	if (bundleOrExecutableBookmarkData == nil) {
+		[self setCompletionProvider:^ NSURL * (NSError **errorRef) {
+			if (errorRef != NULL) {
+				*errorRef = bundleOrExecutableBookmarkDataCreationError;
+			}
+			return nil;
+		}];
+		return;
+	}
+	
+	NSURL *exportDirectoryLocation = [self exportDirectoryLocation];
+	
+	NSError *exportDirectoryBookmarkDataCreationError = nil;
+	NSData *exportDirectoryBookmarkData = [self _createExportDirectoryBookmarkData:exportDirectoryLocation error:&exportDirectoryBookmarkDataCreationError];
 	if (exportDirectoryBookmarkData == nil) {
 		[self setCompletionProvider:^ NSURL * (NSError **errorRef) {
 			if (errorRef != NULL) {
-				*errorRef = bookmarkDataCreationError;
+				*errorRef = exportDirectoryBookmarkDataCreationError;
 			}
 			return nil;
 		}];
@@ -130,19 +146,37 @@
 		reacquirer();
 	}];
 	
-	[classDumpServer classDumpBundleOrExecutableAtLocation:[self bundleOrExecutableLocation] exportDirectoryBookmarkData:exportDirectoryBookmarkData response:^ (NSURL *exportDirectoryLocation, NSError *error) {
+	[classDumpServer classDumpBundleOrExecutableBookmarkData:bundleOrExecutableBookmarkData exportDirectoryBookmarkData:exportDirectoryBookmarkData response:^ (NSNumber *success, NSError *error) {
 		[self setCompletionProvider:^ NSURL * (NSError **errorRef) {
 			if (errorRef != NULL) {
 				*errorRef = error;
 			}
-			return exportDirectoryLocation;
+			return (success != nil) ? exportDirectoryLocation : nil;
 		}];
 		
 		reacquirer();
 	}];
 }
 
-- (NSData *)_createExportDirectoryBookmarkData:(NSError **)errorRef
+- (NSData *)_createBundleOrExecutableBookmarkData:(NSURL *)bundleOrExecutableLocation error:(NSError **)errorRef
+{
+	NSError *bookmarkDataCreationError = nil;
+	NSData *bookmarkData = [bundleOrExecutableLocation bookmarkDataWithOptions:(NSURLBookmarkCreationOptions)0 includingResourceValuesForKeys:nil relativeToURL:nil error:&bookmarkDataCreationError];
+	if (bookmarkData == nil) {
+		if (errorRef != NULL) {
+			NSDictionary *userInfo = @{
+				NSLocalizedDescriptionKey : NSLocalizedStringFromTableInBundle(@"Couldn\u2019t open the executable", nil, [NSBundle bundleWithIdentifier:CDClassDumpServiceBundleIdentifier], @"_CDClassDumpOperation executable access error description"),
+				NSLocalizedRecoverySuggestionErrorKey : NSLocalizedStringFromTableInBundle(@"There was an unknown error while opening the executable. Please try again.", nil, [NSBundle bundleWithIdentifier:CDClassDumpServiceBundleIdentifier], @"_CDClassDumpOperation executable access error recovery suggestion"),
+				NSUnderlyingErrorKey : bookmarkDataCreationError,
+			};
+			*errorRef = [NSError errorWithDomain:CDClassDumpErrorDomain code:CDClassDumpErrorExportDirectoryCreationError userInfo:userInfo];
+		}
+		return nil;
+	}
+	return bookmarkData;
+}
+
+- (NSData *)_createExportDirectoryBookmarkData:(NSURL *)exportDirectoryLocation error:(NSError **)errorRef
 {
 	void (^wrapAndPopulateError)(NSError *) = ^ void (NSError *error) {
 		if (errorRef != NULL) {
@@ -155,17 +189,15 @@
 		}
 	};
 	
-	NSURL *exportLocation = [self exportDirectoryLocation];
-	
 	NSError *exportDirectoryCreationError = nil;
-	BOOL exportDirectoryCreated = [[NSFileManager defaultManager] createDirectoryAtURL:exportLocation withIntermediateDirectories:YES attributes:nil error:&exportDirectoryCreationError];
+	BOOL exportDirectoryCreated = [[NSFileManager defaultManager] createDirectoryAtURL:exportDirectoryLocation withIntermediateDirectories:YES attributes:nil error:&exportDirectoryCreationError];
 	if (!exportDirectoryCreated) {
 		wrapAndPopulateError(exportDirectoryCreationError);
 		return nil;
 	}
 	
 	NSError *bookmarkDataCreationError = nil;
-	NSData *bookmarkData = [exportLocation bookmarkDataWithOptions:(NSURLBookmarkCreationOptions)0 includingResourceValuesForKeys:nil relativeToURL:nil error:&bookmarkDataCreationError];
+	NSData *bookmarkData = [exportDirectoryLocation bookmarkDataWithOptions:(NSURLBookmarkCreationOptions)0 includingResourceValuesForKeys:nil relativeToURL:nil error:&bookmarkDataCreationError];
 	if (bookmarkData == nil) {
 		wrapAndPopulateError(bookmarkDataCreationError);
 		return nil;

@@ -37,8 +37,15 @@
 
 #pragma mark - CDClassDumpServerInterface
 
-- (void)classDumpBundleOrExecutableAtLocation:(NSURL *)bundleOrExecutableLocation exportDirectoryBookmarkData:(NSData *)exportDirectoryBookmarkData response:(void (^)(NSURL *exportDirectoryLocation, NSError *error))response
+- (void)classDumpBundleOrExecutableBookmarkData:(NSData *)bundleOrExecutableBookmarkData exportDirectoryBookmarkData:(NSData *)exportDirectoryBookmarkData response:(void (^)(NSNumber *success, NSError *error))response
 {
+	NSError *bundleOrExecutableRetrievalError = nil;
+	NSURL *bundleOrExecutableLocation = [self _retrieveBundleOrExecutableLocation:bundleOrExecutableBookmarkData error:&bundleOrExecutableRetrievalError];
+	if (bundleOrExecutableLocation == nil) {
+		response(nil, bundleOrExecutableRetrievalError);
+		return;
+	}
+	
 	NSError *exportLocationRetrievalError = nil;
 	NSURL *exportDirectoryLocation = [self _retrieveExportDirectoryLocation:exportDirectoryBookmarkData error:&exportLocationRetrievalError];
 	if (exportDirectoryLocation == nil) {
@@ -52,13 +59,36 @@
 	NSOperation *responseOperation = [NSBlockOperation blockOperationWithBlock:^ {
 		NSError *classDumpError = nil;
 		NSURL *exportLocation = [classDumpOperation completionProvider](&classDumpError);
-		response(exportLocation, classDumpError);
+		if (exportLocation == nil) {
+			response(nil, classDumpError);
+			return;
+		}
+		response(@YES, nil);
 	}];
 	[responseOperation addDependency:classDumpOperation];
 	[[self operationQueue] addOperation:responseOperation];
 }
 
 #pragma mark - Private
+
+- (NSURL *)_retrieveBundleOrExecutableLocation:(NSData *)bundleOrExecutableBookmarkData error:(NSError **)errorRef
+{
+	NSError *bundleOrExecutableRetrievalError = nil;
+	NSURL *bundleOrExecutableLocation = [NSURL URLByResolvingBookmarkData:bundleOrExecutableBookmarkData options:(NSURLBookmarkResolutionOptions)0 relativeToURL:nil bookmarkDataIsStale:NULL error:&bundleOrExecutableRetrievalError];
+	if (bundleOrExecutableLocation == nil) {
+		if (errorRef != NULL) {
+			NSDictionary *userInfo = @{
+				NSLocalizedDescriptionKey : NSLocalizedStringFromTableInBundle(@"Couldn\u2019t open the executable", nil, [NSBundle bundleWithIdentifier:CDClassDumpServiceBundleIdentifier], @"_CDClassDumpServer executable access error description"),
+				NSLocalizedRecoverySuggestionErrorKey : NSLocalizedStringFromTableInBundle(@"There was an unknown error while opening the executable. Please try again.", nil, [NSBundle bundleWithIdentifier:CDClassDumpServiceBundleIdentifier], @"_CDClassDumpServer executable access error recovery suggestion"),
+				NSUnderlyingErrorKey : bundleOrExecutableRetrievalError,
+			};
+			*errorRef = [NSError errorWithDomain:CDClassDumpErrorDomain code:CDClassDumpErrorExportDirectoryCreationError userInfo:userInfo];
+		}
+		return nil;
+	}
+	
+	return bundleOrExecutableLocation;
+}
 
 - (NSURL *)_retrieveExportDirectoryLocation:(NSData *)exportDirectoryBookmarkData error:(NSError **)errorRef
 {
