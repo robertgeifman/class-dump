@@ -8,7 +8,8 @@
 
 #import "_CDClassDumpServer.h"
 
-#import "_CDClassDumpServerInterface.h"
+#import "CDClassDumpServerInterface.h"
+
 #import "_CDClassDumpInternalOperation.h"
 
 @interface _CDClassDumpServer ()
@@ -31,7 +32,7 @@
 	return self;
 }
 
-#pragma mark - _CDClassDumpServerInterface
+#pragma mark - CDClassDumpServerInterface
 
 - (void)classDumpBundleOrExecutableAtLocation:(NSURL *)bundleOrExecutableLocation exportDirectoryLocation:(NSURL *)exportDirectoryLocation response:(void (^)(NSURL *exportDirectoryLocation, NSError *error))response
 {
@@ -51,7 +52,7 @@
 
 - (BOOL)listener:(NSXPCListener *)listener shouldAcceptNewConnection:(NSXPCConnection *)connection
 {
-	[connection setExportedInterface:[NSXPCInterface interfaceWithProtocol:@protocol(_CDClassDumpServerInterface)]];
+	[connection setExportedInterface:[NSXPCInterface interfaceWithProtocol:@protocol(CDClassDumpServerInterface)]];
 	[connection setExportedObject:self];
 	[connection resume];
 	

@@ -477,8 +477,8 @@
 		01EB832013A591D8003EDE60 /* CDVisitorPropertyState.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CDVisitorPropertyState.m; path = Source/CDVisitorPropertyState.m; sourceTree = SOURCE_ROOT; };
 		6D688E9E17AD2DFD00E4E588 /* CDClassDumpOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CDClassDumpOperation.h; path = Framework/CDClassDumpOperation.h; sourceTree = SOURCE_ROOT; usesTabs = 1; };
 		6D688E9F17AD2DFD00E4E588 /* CDClassDumpOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CDClassDumpOperation.m; path = Framework/CDClassDumpOperation.m; sourceTree = SOURCE_ROOT; usesTabs = 1; };
-		6DC9717417AD9B8800275B58 /* en */ = {isa = PBXFileReference; lastKnownFileType = file; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
-		6DC9717717AD9B8C00275B58 /* en */ = {isa = PBXFileReference; lastKnownFileType = file; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
+		6DC9717417AD9B8800275B58 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		6DC9717717AD9B8C00275B58 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
 		6DCC313617AD24E7000E4A23 /* ClassDump.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = ClassDump.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		6DCC315B17AD259F000E4A23 /* ClassDump.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ClassDump.h; path = Framework/ClassDump.h; sourceTree = SOURCE_ROOT; usesTabs = 1; };
 		6DCC315C17AD259F000E4A23 /* ClassDump.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ClassDump.m; path = Framework/ClassDump.m; sourceTree = SOURCE_ROOT; usesTabs = 1; };
@@ -497,7 +497,7 @@
 		6DFDECF517AD8F9E00564D9F /* CDClassDump+Extensions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "CDClassDump+Extensions.m"; path = "Service/CDClassDump+Extensions.m"; sourceTree = "<group>"; };
 		6DFDECF717AD8FB600564D9F /* _CDClassDumpInternalOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = _CDClassDumpInternalOperation.h; path = Service/_CDClassDumpInternalOperation.h; sourceTree = "<group>"; usesTabs = 1; };
 		6DFDECF817AD8FB600564D9F /* _CDClassDumpInternalOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = _CDClassDumpInternalOperation.m; path = Service/_CDClassDumpInternalOperation.m; sourceTree = "<group>"; usesTabs = 1; };
-		6DFDECF917AD8FB600564D9F /* _CDClassDumpServerInterface.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = _CDClassDumpServerInterface.h; path = Service/_CDClassDumpServerInterface.h; sourceTree = "<group>"; };
+		6DFDECF917AD8FB600564D9F /* CDClassDumpServerInterface.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CDClassDumpServerInterface.h; path = Service/CDClassDumpServerInterface.h; sourceTree = "<group>"; };
 		6DFDECFA17AD8FB600564D9F /* _CDClassDumpServer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = _CDClassDumpServer.h; path = Service/_CDClassDumpServer.h; sourceTree = "<group>"; };
 		6DFDECFB17AD8FB600564D9F /* _CDClassDumpServer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = _CDClassDumpServer.m; path = Service/_CDClassDumpServer.m; sourceTree = "<group>"; usesTabs = 1; };
 		6DFDECFC17AD8FB600564D9F /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = Service/main.m; sourceTree = "<group>"; };
@@ -987,7 +987,7 @@
 		6DFDECDD17AD8F1500564D9F /* Service */ = {
 			isa = PBXGroup;
 			children = (
-				6DFDECF917AD8FB600564D9F /* _CDClassDumpServerInterface.h */,
+				6DFDECF917AD8FB600564D9F /* CDClassDumpServerInterface.h */,
 				6DFDECFC17AD8FB600564D9F /* main.m */,
 				6DFDED0217AD8FD900564D9F /* Server */,
 				6DFDED0117AD8FD400564D9F /* Operations */,

@@ -1,5 +1,5 @@
 //
-//  _CDClassDumpServerInterface.h
+//  CDClassDumpServerInterface.h
 //  class-dump
 //
 //  Created by Damien DeVille on 8/3/13.
@@ -8,7 +8,7 @@
 
 #import <Foundation/Foundation.h>
 
-@protocol _CDClassDumpServerInterface <NSObject>
+@protocol CDClassDumpServerInterface <NSObject>
 
 - (void)classDumpBundleOrExecutableAtLocation:(NSURL *)bundleOrExecutableLocation exportDirectoryLocation:(NSURL *)exportDirectoryLocation response:(void (^)(NSURL *exportDirectoryLocation, NSError *error))response;
 

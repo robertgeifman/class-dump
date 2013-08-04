@@ -8,7 +8,7 @@
 
 #import "CDClassDumpOperation.h"
 
-#import "_CDClassDumpServerInterface.h"
+#import "CDClassDumpServerInterface.h"
 
 #import "ClassDump-Constants.h"
 #import "ClassDumpService-Constants.h"
@@ -55,7 +55,7 @@
 	NSXPCConnection *connection = [[NSXPCConnection alloc] initWithServiceName:CDClassDumpServiceName];
 	[self setConnection:connection];
 	
-	NSXPCInterface *classDumpServerInterface = [NSXPCInterface interfaceWithProtocol:@protocol(_CDClassDumpServerInterface)];
+	NSXPCInterface *classDumpServerInterface = [NSXPCInterface interfaceWithProtocol:@protocol(CDClassDumpServerInterface)];
 	[classDumpServerInterface setClasses:[NSSet setWithObjects:[NSURL class], nil] forSelector:@selector(classDumpBundleOrExecutableAtLocation:exportDirectoryLocation:response:) argumentIndex:0 ofReply:NO];
 	[classDumpServerInterface setClasses:[NSSet setWithObjects:[NSURL class], nil] forSelector:@selector(classDumpBundleOrExecutableAtLocation:exportDirectoryLocation:response:) argumentIndex:1 ofReply:NO];
 	[classDumpServerInterface setClasses:[NSSet setWithObjects:[NSURL class], nil] forSelector:@selector(classDumpBundleOrExecutableAtLocation:exportDirectoryLocation:response:) argumentIndex:0 ofReply:YES];
@@ -101,7 +101,7 @@
 
 - (void)_doAsynchronousWorkWithReacquirer:(void (^)(void))reacquirer
 {
-	id <_CDClassDumpServerInterface> classDumpServer = [[self connection] remoteObjectProxyWithErrorHandler:^ (NSError *error) {
+	id <CDClassDumpServerInterface> classDumpServer = [[self connection] remoteObjectProxyWithErrorHandler:^ (NSError *error) {
 		NSError *classDumpError = [self _remoteProxyObjectError:error];
 		[self setCompletionProvider:^ id (NSError **errorRef) {
 			if (errorRef != NULL) {
