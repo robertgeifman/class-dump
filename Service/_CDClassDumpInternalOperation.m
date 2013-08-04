@@ -152,22 +152,20 @@
 
 - (NSString *)_retrieveExportDirectoryPath:(NSError **)errorRef
 {
-	NSError *exportDirectoryCreationError = nil;
-	BOOL exportDirectoryCreated = [[NSFileManager defaultManager] createDirectoryAtURL:[self exportDirectoryLocation] withIntermediateDirectories:YES attributes:nil error:&exportDirectoryCreationError];
-	if (exportDirectoryCreated) {
-		return [[self exportDirectoryLocation] path];
+	NSString *exportDirectoryPath = [[self exportDirectoryLocation] path];
+	
+	if (exportDirectoryPath == nil) {
+		if (errorRef != NULL) {
+			NSDictionary *userInfo = @{
+				NSLocalizedDescriptionKey : NSLocalizedStringFromTableInBundle(@"Couldn\u2019t create the export directory", nil, [NSBundle bundleWithIdentifier:CDClassDumpServiceBundleIdentifier], @"_CDClassDumpOperation export directory creation error description"),
+				NSLocalizedRecoverySuggestionErrorKey : NSLocalizedStringFromTableInBundle(@"There was an unknown error while creating the export directory. Please try again.", nil, [NSBundle bundleWithIdentifier:CDClassDumpServiceBundleIdentifier], @"_CDClassDumpOperation export directory creation error recovery suggestion"),
+			};
+			*errorRef = [NSError errorWithDomain:CDClassDumpErrorDomain code:CDClassDumpErrorExportDirectoryCreationError userInfo:userInfo];
+		}
+		return nil;
 	}
 	
-	if (errorRef != NULL) {
-		NSDictionary *userInfo = @{
-			NSLocalizedDescriptionKey : NSLocalizedStringFromTableInBundle(@"Couldn\u2019t create the export directory", nil, [NSBundle bundleWithIdentifier:CDClassDumpServiceBundleIdentifier], @"_CDClassDumpOperation export directory creation error description"),
-			NSLocalizedRecoverySuggestionErrorKey : NSLocalizedStringFromTableInBundle(@"There was an unknown error while creating the export directory. Please try again.", nil, [NSBundle bundleWithIdentifier:CDClassDumpServiceBundleIdentifier], @"_CDClassDumpOperation export directory creation error recovery suggestion"),
-			NSUnderlyingErrorKey : exportDirectoryCreationError,
-        };
-		*errorRef = [NSError errorWithDomain:CDClassDumpErrorDomain code:CDClassDumpErrorExportDirectoryCreationError userInfo:userInfo];
-	}
-	
-	return NO;
+	return exportDirectoryPath;
 }
 
 #pragma mark - Completion
