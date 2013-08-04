@@ -10,6 +10,6 @@
 
 @protocol CDClassDumpServerInterface <NSObject>
 
-- (void)classDumpBundleOrExecutableAtLocation:(NSURL *)bundleOrExecutableLocation exportDirectoryLocation:(NSURL *)exportDirectoryLocation response:(void (^)(NSURL *exportDirectoryLocation, NSError *error))response;
+- (void)classDumpBundleOrExecutableAtLocation:(NSURL *)bundleOrExecutableLocation exportDirectoryBookmarkData:(NSData *)exportDirectoryBookmarkData response:(void (^)(NSURL *exportDirectoryLocation, NSError *error))response;
 
 @end
