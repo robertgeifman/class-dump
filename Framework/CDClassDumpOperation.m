@@ -45,6 +45,13 @@
 	NSParameterAssert(exportDirectoryLocation != nil);
 	_exportDirectoryLocation = [exportDirectoryLocation copy];
 	
+	_completionProvider = [^ NSURL * (NSError **errorRef) {
+		if (errorRef != NULL) {
+			*errorRef = [NSError errorWithDomain:NSCocoaErrorDomain code:NSUserCancelledError userInfo:nil];
+		}
+		return nil;
+	} copy];
+	
 	NSXPCConnection *connection = [[NSXPCConnection alloc] initWithServiceName:CDClassDumpServiceName];
 	[self setConnection:connection];
 	
