@@ -9,6 +9,7 @@
 #import "CDClassDump+NSErrorBasedAPI.h"
 
 #import "ClassDump-Constants.h"
+#import "ClassDumpService-Constants.h"
 
 @implementation CDClassDump (NSErrorBasedAPI)
 
@@ -26,7 +27,7 @@
 	}
 	
 	NSMutableDictionary *userInfo = [NSMutableDictionary dictionary];
-	[userInfo setValue:NSLocalizedStringFromTableInBundle(@"There was an unknown error while loading the file", nil, [NSBundle bundleWithIdentifier:CDClassDumpBundleIdentifier], @"CDClassDump+Extensions file loading error description") forKey:NSLocalizedDescriptionKey];
+	[userInfo setValue:NSLocalizedStringFromTableInBundle(@"There was an unknown error while loading the file", nil, [NSBundle bundleWithIdentifier:CDClassDumpServiceBundleIdentifier], @"CDClassDump+Extensions file loading error description") forKey:NSLocalizedDescriptionKey];
 	[userInfo setValue:[error localizedDescription] forKey:NSLocalizedRecoverySuggestionErrorKey];
 	*errorRef = [NSError errorWithDomain:CDClassDumpErrorDomain code:CDClassDumpErrorFileLoading userInfo:userInfo];
 	
