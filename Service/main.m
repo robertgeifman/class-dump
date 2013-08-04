@@ -12,12 +12,12 @@
 
 int main(int argc, const char **argv)
 {
-	NSXPCListener *listener = [NSXPCListener serviceListener];
-	
-	_CDClassDumpServer *classDumpServer = [[_CDClassDumpServer alloc] init];
-	[listener setDelegate:classDumpServer];
-	
-	[listener resume];
-	
-	return 0;
+    NSXPCListener *listener = [NSXPCListener serviceListener];
+    
+    _CDClassDumpServer *classDumpServer = [[_CDClassDumpServer alloc] init];
+    [listener setDelegate:classDumpServer];
+    
+    [listener resume];
+    
+    return 0;
 }
