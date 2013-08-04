@@ -52,17 +52,7 @@
 		return nil;
 	} copy];
 	
-	NSXPCConnection *connection = [[NSXPCConnection alloc] initWithServiceName:CDClassDumpServiceName];
-	[self setConnection:connection];
-	
-	NSXPCInterface *classDumpServerInterface = [NSXPCInterface interfaceWithProtocol:@protocol(CDClassDumpServerInterface)];
-	[classDumpServerInterface setClasses:[NSSet setWithObjects:[NSURL class], nil] forSelector:@selector(classDumpBundleOrExecutableAtLocation:exportDirectoryLocation:response:) argumentIndex:0 ofReply:NO];
-	[classDumpServerInterface setClasses:[NSSet setWithObjects:[NSURL class], nil] forSelector:@selector(classDumpBundleOrExecutableAtLocation:exportDirectoryLocation:response:) argumentIndex:1 ofReply:NO];
-	[classDumpServerInterface setClasses:[NSSet setWithObjects:[NSURL class], nil] forSelector:@selector(classDumpBundleOrExecutableAtLocation:exportDirectoryLocation:response:) argumentIndex:0 ofReply:YES];
-	[classDumpServerInterface setClasses:[NSSet setWithObjects:[NSError class], nil] forSelector:@selector(classDumpBundleOrExecutableAtLocation:exportDirectoryLocation:response:) argumentIndex:1 ofReply:YES];
-	
-	[connection setRemoteObjectInterface:classDumpServerInterface];
-	[connection resume];
+	[self _setupXPCConnection];
 	
 	return self;
 }
@@ -97,6 +87,21 @@
 		setExecuting(NO);
 		setFinished(YES);
 	}];
+}
+
+- (void)_setupXPCConnection
+{
+	NSXPCConnection *connection = [[NSXPCConnection alloc] initWithServiceName:CDClassDumpServiceName];
+	[self setConnection:connection];
+	
+	NSXPCInterface *classDumpServerInterface = [NSXPCInterface interfaceWithProtocol:@protocol(CDClassDumpServerInterface)];
+	[classDumpServerInterface setClasses:[NSSet setWithObjects:[NSURL class], nil] forSelector:@selector(classDumpBundleOrExecutableAtLocation:exportDirectoryLocation:response:) argumentIndex:0 ofReply:NO];
+	[classDumpServerInterface setClasses:[NSSet setWithObjects:[NSURL class], nil] forSelector:@selector(classDumpBundleOrExecutableAtLocation:exportDirectoryLocation:response:) argumentIndex:1 ofReply:NO];
+	[classDumpServerInterface setClasses:[NSSet setWithObjects:[NSURL class], nil] forSelector:@selector(classDumpBundleOrExecutableAtLocation:exportDirectoryLocation:response:) argumentIndex:0 ofReply:YES];
+	[classDumpServerInterface setClasses:[NSSet setWithObjects:[NSError class], nil] forSelector:@selector(classDumpBundleOrExecutableAtLocation:exportDirectoryLocation:response:) argumentIndex:1 ofReply:YES];
+	
+	[connection setRemoteObjectInterface:classDumpServerInterface];
+	[connection resume];
 }
 
 - (void)_doAsynchronousWorkWithReacquirer:(void (^)(void))reacquirer
