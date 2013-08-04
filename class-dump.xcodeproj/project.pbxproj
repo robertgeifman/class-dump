@@ -141,7 +141,6 @@
 		6DCC316017AD259F000E4A23 /* ClassDump.h in Headers */ = {isa = PBXBuildFile; fileRef = 6DCC315B17AD259F000E4A23 /* ClassDump.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		6DCC316217AD259F000E4A23 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 6DCC315D17AD259F000E4A23 /* InfoPlist.strings */; };
 		6DCC317F17AD2682000E4A23 /* ClassDump-Constants.h in Headers */ = {isa = PBXBuildFile; fileRef = 6DCC317D17AD2682000E4A23 /* ClassDump-Constants.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		6DD4D95D17AE630B00E4552B /* ClassDumpService.entitlements in Resources */ = {isa = PBXBuildFile; fileRef = 6DD4D95C17AE630B00E4552B /* ClassDumpService.entitlements */; };
 		6DEA956817AD767A002D079A /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 6DEA956617AD767A002D079A /* Localizable.strings */; };
 		6DEA959D17AD872C002D079A /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 01EB826313A590D9003EDE60 /* Foundation.framework */; };
 		6DFDECB617AD89FC00564D9F /* libMachObjC.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 013D1F1113A5AE5A00BF0A67 /* libMachObjC.a */; };
@@ -1272,7 +1271,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				6DC9717617AD9B8C00275B58 /* Localizable.strings in Resources */,
-				6DD4D95D17AE630B00E4552B /* ClassDumpService.entitlements in Resources */,
 				6DC9717317AD9B8800275B58 /* InfoPlist.strings in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
