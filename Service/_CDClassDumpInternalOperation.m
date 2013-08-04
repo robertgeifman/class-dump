@@ -12,8 +12,8 @@
 #import "CDSearchPathState.h"
 #import "CDMultiFileVisitor.h"
 
-#import "CDFile+Extensions.h"
-#import "CDClassDump+Extensions.h"
+#import "CDFile+NSErrorBasedAPI.h"
+#import "CDClassDump+NSErrorBasedAPI.h"
 
 #import "ClassDump-Constants.h"
 #import "ClassDumpService-Constants.h"
@@ -80,7 +80,7 @@
 	[[classDump searchPathState] setExecutablePath:[executablePath stringByDeletingLastPathComponent]];
     
 	NSError *fileOpeningError = nil;
-	CDFile *file = [CDFile fileWithContentsOfFile:executablePath searchPathState:[classDump searchPathState] error:&fileOpeningError];
+	CDFile *file = [CDFile fmw_fileWithContentsOfFile:executablePath searchPathState:[classDump searchPathState] error:&fileOpeningError];
 	if (file == nil) {
 		[self _completeWithError:fileOpeningError];
 		return;
@@ -88,7 +88,7 @@
 	
 	CDArch targetArchitecture;
 	NSError *architectureRetrievalError = nil;
-	BOOL architectureRetrieved = [file bestMatchForArch:&targetArchitecture error:&architectureRetrievalError];
+	BOOL architectureRetrieved = [file fmw_bestMatchForArch:&targetArchitecture error:&architectureRetrievalError];
 	if (!architectureRetrieved) {
 		[self _completeWithError:architectureRetrievalError];
 		return;

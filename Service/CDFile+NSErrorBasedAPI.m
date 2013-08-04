@@ -1,20 +1,20 @@
 //
-//  CDFile+Extensions.m
+//  CDFile+NSErrorBasedAPI.m
 //  class-dump
 //
 //  Created by Damien DeVille on 8/3/13.
 //  Copyright (c) 2013 Damien DeVille. All rights reserved.
 //
 
-#import "CDFile+Extensions.h"
+#import "CDFile+NSErrorBasedAPI.h"
 
 #import "ClassDump-Constants.h"
 
 #define CDFileRecoverySuggestion	NSLocalizedStringFromTableInBundle(@"Please make sure that the file you have selected is an executable, a framework or an application bundle.", nil, [NSBundle bundleWithIdentifier:CDClassDumpBundleIdentifier], @"CDFile+Extensions input file not executable error recovery suggestion")
 
-@implementation CDFile (Extensions)
+@implementation CDFile (NSErrorBasedAPI)
 
-+ (id)fileWithContentsOfFile:(NSString *)filename searchPathState:(CDSearchPathState *)searchPathState error:(NSError **)errorRef
++ (id)fmw_fileWithContentsOfFile:(NSString *)filename searchPathState:(CDSearchPathState *)searchPathState error:(NSError **)errorRef
 {
 	CDFile *file = [self fileWithContentsOfFile:filename searchPathState:searchPathState];
 	if (file != nil) {
@@ -54,7 +54,7 @@
 	return nil;
 }
 
-- (BOOL)bestMatchForArch:(CDArch *)ioArchPtr error:(NSError **)errorRef
+- (BOOL)fmw_bestMatchForArch:(CDArch *)ioArchPtr error:(NSError **)errorRef
 {
 	BOOL archRetrieved = [self bestMatchForArch:ioArchPtr];
 	if (archRetrieved) {

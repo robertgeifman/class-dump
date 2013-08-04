@@ -162,8 +162,8 @@
 		6DFDECDB17AD8E9100564D9F /* ClassDump.m in Sources */ = {isa = PBXBuildFile; fileRef = 6DCC315C17AD259F000E4A23 /* ClassDump.m */; };
 		6DFDECDC17AD8E9100564D9F /* ClassDump-Constants.m in Sources */ = {isa = PBXBuildFile; fileRef = 6DCC317E17AD2682000E4A23 /* ClassDump-Constants.m */; };
 		6DFDECE817AD8F4C00564D9F /* ClassDumpService-Constants.m in Sources */ = {isa = PBXBuildFile; fileRef = 6DFDECE717AD8F4C00564D9F /* ClassDumpService-Constants.m */; };
-		6DFDECF217AD8F7B00564D9F /* CDFile+Extensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 6DFDECEF17AD8F7B00564D9F /* CDFile+Extensions.m */; };
-		6DFDECF617AD8F9E00564D9F /* CDClassDump+Extensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 6DFDECF517AD8F9E00564D9F /* CDClassDump+Extensions.m */; };
+		6DFDECF217AD8F7B00564D9F /* CDFile+NSErrorBasedAPI.m in Sources */ = {isa = PBXBuildFile; fileRef = 6DFDECEF17AD8F7B00564D9F /* CDFile+NSErrorBasedAPI.m */; };
+		6DFDECF617AD8F9E00564D9F /* CDClassDump+NSErrorBasedAPI.m in Sources */ = {isa = PBXBuildFile; fileRef = 6DFDECF517AD8F9E00564D9F /* CDClassDump+NSErrorBasedAPI.m */; };
 		6DFDECFD17AD8FB600564D9F /* _CDClassDumpInternalOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 6DFDECF817AD8FB600564D9F /* _CDClassDumpInternalOperation.m */; };
 		6DFDECFE17AD8FB600564D9F /* _CDClassDumpServer.m in Sources */ = {isa = PBXBuildFile; fileRef = 6DFDECFB17AD8FB600564D9F /* _CDClassDumpServer.m */; };
 		6DFDECFF17AD8FB600564D9F /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 6DFDECFC17AD8FB600564D9F /* main.m */; };
@@ -491,10 +491,10 @@
 		6DFDECE017AD8F3E00564D9F /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = Service/Info.plist; sourceTree = "<group>"; };
 		6DFDECE617AD8F4C00564D9F /* ClassDumpService-Constants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "ClassDumpService-Constants.h"; path = "Service/ClassDumpService-Constants.h"; sourceTree = "<group>"; };
 		6DFDECE717AD8F4C00564D9F /* ClassDumpService-Constants.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "ClassDumpService-Constants.m"; path = "Service/ClassDumpService-Constants.m"; sourceTree = "<group>"; };
-		6DFDECEE17AD8F7B00564D9F /* CDFile+Extensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "CDFile+Extensions.h"; path = "Service/CDFile+Extensions.h"; sourceTree = "<group>"; };
-		6DFDECEF17AD8F7B00564D9F /* CDFile+Extensions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "CDFile+Extensions.m"; path = "Service/CDFile+Extensions.m"; sourceTree = "<group>"; };
-		6DFDECF417AD8F9E00564D9F /* CDClassDump+Extensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "CDClassDump+Extensions.h"; path = "Service/CDClassDump+Extensions.h"; sourceTree = "<group>"; };
-		6DFDECF517AD8F9E00564D9F /* CDClassDump+Extensions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "CDClassDump+Extensions.m"; path = "Service/CDClassDump+Extensions.m"; sourceTree = "<group>"; };
+		6DFDECEE17AD8F7B00564D9F /* CDFile+NSErrorBasedAPI.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "CDFile+NSErrorBasedAPI.h"; path = "Service/CDFile+NSErrorBasedAPI.h"; sourceTree = "<group>"; };
+		6DFDECEF17AD8F7B00564D9F /* CDFile+NSErrorBasedAPI.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "CDFile+NSErrorBasedAPI.m"; path = "Service/CDFile+NSErrorBasedAPI.m"; sourceTree = "<group>"; };
+		6DFDECF417AD8F9E00564D9F /* CDClassDump+NSErrorBasedAPI.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "CDClassDump+NSErrorBasedAPI.h"; path = "Service/CDClassDump+NSErrorBasedAPI.h"; sourceTree = "<group>"; };
+		6DFDECF517AD8F9E00564D9F /* CDClassDump+NSErrorBasedAPI.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "CDClassDump+NSErrorBasedAPI.m"; path = "Service/CDClassDump+NSErrorBasedAPI.m"; sourceTree = "<group>"; };
 		6DFDECF717AD8FB600564D9F /* _CDClassDumpInternalOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = _CDClassDumpInternalOperation.h; path = Service/_CDClassDumpInternalOperation.h; sourceTree = "<group>"; usesTabs = 1; };
 		6DFDECF817AD8FB600564D9F /* _CDClassDumpInternalOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = _CDClassDumpInternalOperation.m; path = Service/_CDClassDumpInternalOperation.m; sourceTree = "<group>"; usesTabs = 1; };
 		6DFDECF917AD8FB600564D9F /* CDClassDumpServerInterface.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CDClassDumpServerInterface.h; path = Service/CDClassDumpServerInterface.h; sourceTree = "<group>"; };
@@ -1020,10 +1020,10 @@
 		6DFDECF317AD8F8000564D9F /* Categories */ = {
 			isa = PBXGroup;
 			children = (
-				6DFDECF417AD8F9E00564D9F /* CDClassDump+Extensions.h */,
-				6DFDECF517AD8F9E00564D9F /* CDClassDump+Extensions.m */,
-				6DFDECEE17AD8F7B00564D9F /* CDFile+Extensions.h */,
-				6DFDECEF17AD8F7B00564D9F /* CDFile+Extensions.m */,
+				6DFDECF417AD8F9E00564D9F /* CDClassDump+NSErrorBasedAPI.h */,
+				6DFDECF517AD8F9E00564D9F /* CDClassDump+NSErrorBasedAPI.m */,
+				6DFDECEE17AD8F7B00564D9F /* CDFile+NSErrorBasedAPI.h */,
+				6DFDECEF17AD8F7B00564D9F /* CDFile+NSErrorBasedAPI.m */,
 			);
 			name = Categories;
 			sourceTree = "<group>";
@@ -1441,7 +1441,7 @@
 				6DFDECCD17AD8B5C00564D9F /* CDFindMethodVisitor.m in Sources */,
 				6DFDECD817AD8B7B00564D9F /* ClassDump-Constants.m in Sources */,
 				6DFDECD317AD8B6100564D9F /* CDMultiFileVisitor.m in Sources */,
-				6DFDECF617AD8F9E00564D9F /* CDClassDump+Extensions.m in Sources */,
+				6DFDECF617AD8F9E00564D9F /* CDClassDump+NSErrorBasedAPI.m in Sources */,
 				6DFDECFE17AD8FB600564D9F /* _CDClassDumpServer.m in Sources */,
 				6DFDECCB17AD8B5100564D9F /* CDStructureInfo.m in Sources */,
 				6DFDECE817AD8F4C00564D9F /* ClassDumpService-Constants.m in Sources */,
@@ -1452,7 +1452,7 @@
 				6DFDECCA17AD8B5100564D9F /* CDTypeController.m in Sources */,
 				6DFDECD017AD8B5C00564D9F /* CDSearchPathState.m in Sources */,
 				6DFDECD417AD8B6100564D9F /* CDClassFrameworkVisitor.m in Sources */,
-				6DFDECF217AD8F7B00564D9F /* CDFile+Extensions.m in Sources */,
+				6DFDECF217AD8F7B00564D9F /* CDFile+NSErrorBasedAPI.m in Sources */,
 				6DFDECC817AD8B4B00564D9F /* CDClassDump.m in Sources */,
 				6DFDECFF17AD8FB600564D9F /* main.m in Sources */,
 				6DFDECCE17AD8B5C00564D9F /* CDVisitor.m in Sources */,

@@ -1,16 +1,16 @@
 //
-//  CDClassDump+Extensions.m
+//  CDClassDump+NSErrorBasedAPI.m
 //  class-dump
 //
 //  Created by Damien DeVille on 8/3/13.
 //  Copyright (c) 2013 Damien DeVille. All rights reserved.
 //
 
-#import "CDClassDump+Extensions.h"
+#import "CDClassDump+NSErrorBasedAPI.h"
 
 #import "ClassDump-Constants.h"
 
-@implementation CDClassDump (Extensions)
+@implementation CDClassDump (NSErrorBasedAPI)
 
 - (BOOL)fmw_loadFile:(CDFile *)file error:(NSError **)errorRef
 {
