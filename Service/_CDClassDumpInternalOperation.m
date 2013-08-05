@@ -108,7 +108,7 @@
     
     if (![classDump hasObjectiveCRuntimeInfo]) {
         NSDictionary *userInfo = @{
-            NSLocalizedDescriptionKey : NSLocalizedStringFromTableInBundle(@"The executable doesn\u2019 contain any Objective-C runtime information", nil, [NSBundle bundleWithIdentifier:CDClassDumpServiceBundleIdentifier], @"_CDClassDumpOperation no objc runtime info error description"),
+            NSLocalizedDescriptionKey : NSLocalizedStringFromTableInBundle(@"The executable doesn\u2019t contain any Objective-C runtime information", nil, [NSBundle bundleWithIdentifier:CDClassDumpServiceBundleIdentifier], @"_CDClassDumpOperation no objc runtime info error description"),
             NSLocalizedRecoverySuggestionErrorKey : NSLocalizedStringFromTableInBundle(@"Please make sure that the executable you have selected contains Objective-C runtime information.", nil, [NSBundle bundleWithIdentifier:CDClassDumpServiceBundleIdentifier], @"_CDClassDumpOperation no objc runtime info error recovery suggestion"),
         };
         NSError *error = [NSError errorWithDomain:CDClassDumpErrorDomain code:CDClassDumpErrorExecutableNoObjCRuntimeInfo userInfo:userInfo];
