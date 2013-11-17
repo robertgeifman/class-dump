@@ -1,7 +1,7 @@
 // -*- mode: ObjC -*-
 
 //  This file is part of class-dump, a utility for examining the Objective-C segment of Mach-O files.
-//  Copyright (C) 1997-1998, 2000-2001, 2004-2012 Steve Nygard.
+//  Copyright (C) 1997-1998, 2000-2001, 2004-2013 Steve Nygard.
 
 #include <stdio.h>
 #include <libc.h>
@@ -25,7 +25,7 @@ void print_usage(void)
             "Usage: deprotect [options] <input file> <output file>\n"
             "\n"
             "  where options are:\n"
-            "        --arch <arch>  choose a specific architecture from a universal binary (ppc, ppc64, i386, x86_64)\n"
+            "        --arch <arch>  choose a specific architecture from a universal binary (ppc, ppc64, i386, x86_64, armv6, armv7, armv7s, arm64)\n"
             ,
             CLASS_DUMP_VERSION
        );

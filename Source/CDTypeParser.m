@@ -1,7 +1,7 @@
 // -*- mode: ObjC -*-
 
 //  This file is part of class-dump, a utility for examining the Objective-C segment of Mach-O files.
-//  Copyright (C) 1997-1998, 2000-2001, 2004-2012 Steve Nygard.
+//  Copyright (C) 1997-1998, 2000-2001, 2004-2013 Steve Nygard.
 
 #import "CDTypeParser.h"
 
@@ -45,7 +45,7 @@ static NSString *CDTokenDescription(int token)
     if ((self = [super init])) {
         // Do some preprocessing first: Replace "<unnamed>::" with just "unnamed::".
         NSMutableString *str = [string mutableCopy];
-        [str replaceOccurrencesOfString:@"<unnamed>::" withString:@"unnamed::" options:0 range:NSMakeRange(0, [string length])];
+        [str replaceOccurrencesOfString:@"<unnamed>::" withString:@"unnamed::" options:(NSStringCompareOptions)0 range:NSMakeRange(0, [string length])];
         
         _lexer = [[CDTypeLexer alloc] initWithString:str];
         _lookahead = 0;
@@ -56,7 +56,7 @@ static NSString *CDTokenDescription(int token)
 
 #pragma mark -
 
-- (NSArray *)parseMethodType:(NSError **)error;
+- (NSArray *)parseMethodType:(NSError *__autoreleasing *)error;
 {
     NSArray *result;
 
@@ -92,7 +92,7 @@ static NSString *CDTokenDescription(int token)
     return result;
 }
 
-- (CDType *)parseType:(NSError **)error;
+- (CDType *)parseType:(NSError *__autoreleasing *)error;
 {
     CDType *result;
 
@@ -222,6 +222,9 @@ static NSString *CDTokenDescription(int token)
             type = [[CDType alloc] initSimpleType:'v'];
             // Safari on 10.5 has: "m_function"{?="__pfn"^"__delta"i}
             result = [[CDType alloc] initPointerType:type];
+        } else if (_lookahead == '?') {
+            [self match:'?'];
+            result = [[CDType alloc] initFunctionPointerType];
         } else {
             type = [self _parseTypeInStruct:isInStruct];
             result = [[CDType alloc] initPointerType:type];
@@ -252,6 +255,15 @@ static NSString *CDTokenDescription(int token)
             }
 
             [self match:TK_QUOTED_STRING];
+        } else if (_lookahead == '?') {
+            [self match:'?'];
+            NSArray *blockTypes = nil;
+            if (_lookahead == '<') {
+                [self match:'<'];
+                blockTypes = [[self _parseMethodType] valueForKeyPath:@"type"];
+                [self match:'>'];
+            }
+            result = [[CDType alloc] initBlockTypeWithTypes:blockTypes];
         } else {
             result = [[CDType alloc] initIDType:nil];
         }

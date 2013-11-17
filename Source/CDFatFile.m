@@ -1,7 +1,7 @@
 // -*- mode: ObjC -*-
 
 //  This file is part of class-dump, a utility for examining the Objective-C segment of Mach-O files.
-//  Copyright (C) 1997-1998, 2000-2001, 2004-2012 Steve Nygard.
+//  Copyright (C) 1997-1998, 2000-2001, 2004-2013 Steve Nygard.
 
 #import "CDFatFile.h"
 
@@ -121,14 +121,19 @@
     return NO;
 }
 
-- (CDMachOFile *)machOFileWithArch:(CDArch)cdarch;
+- (CDFatArch *)fatArchWithArch:(CDArch)cdarch;
 {
     for (CDFatArch *arch in self.arches) {
         if (arch.cputype == cdarch.cputype && arch.maskedCPUSubtype == (cdarch.cpusubtype & ~CPU_SUBTYPE_MASK))
-            return arch.machOFile;
+            return arch;
     }
 
     return nil;
+}
+
+- (CDMachOFile *)machOFileWithArch:(CDArch)cdarch;
+{
+    return [[self fatArchWithArch:cdarch] machOFile];
 }
 
 - (NSArray *)archNames;
@@ -151,6 +156,11 @@
 {
     fatArch.fatFile = self;
     [self.arches addObject:fatArch];
+}
+
+- (BOOL)containsArchitecture:(CDArch)arch;
+{
+    return [self fatArchWithArch:arch] != nil;
 }
 
 @end

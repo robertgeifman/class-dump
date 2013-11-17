@@ -1,7 +1,7 @@
 // -*- mode: ObjC -*-
 
 //  This file is part of class-dump, a utility for examining the Objective-C segment of Mach-O files.
-//  Copyright (C) 1997-1998, 2000-2001, 2004-2012 Steve Nygard.
+//  Copyright (C) 1997-1998, 2000-2001, 2004-2013 Steve Nygard.
 
 #import "CDObjectiveC2Processor.h"
 
@@ -80,6 +80,19 @@
         objc2Protocol.optionalInstanceMethods = [cursor readPtr];
         objc2Protocol.optionalClassMethods    = [cursor readPtr];
         objc2Protocol.instanceProperties      = [cursor readPtr];
+        objc2Protocol.size                    = [cursor readInt32];
+        objc2Protocol.flags                   = [cursor readInt32];
+        objc2Protocol.extendedMethodTypes     = 0;
+        
+        CDMachOFileDataCursor *extendedMethodTypesCursor = nil;
+        BOOL hasExtendedMethodTypesField = objc2Protocol.size > 8 * [self.machOFile ptrSize] + 2 * sizeof(uint32_t);
+        if (hasExtendedMethodTypesField) {
+            objc2Protocol.extendedMethodTypes = [cursor readPtr];
+            if (objc2Protocol.extendedMethodTypes != 0) {
+                extendedMethodTypesCursor = [[CDMachOFileDataCursor alloc] initWithFile:self.machOFile address:objc2Protocol.extendedMethodTypes];
+                NSParameterAssert([extendedMethodTypesCursor offset] != 0);
+            }
+        }
         
         //NSLog(@"----------------------------------------");
         //NSLog(@"%016lx %016lx %016lx %016lx", objc2Protocol.isa, objc2Protocol.name, objc2Protocol.protocols, objc2Protocol.instanceMethods);
@@ -102,16 +115,16 @@
             }
         }
         
-        for (CDOCMethod *method in [self loadMethodsAtAddress:objc2Protocol.instanceMethods])
+        for (CDOCMethod *method in [self loadMethodsAtAddress:objc2Protocol.instanceMethods extendedMethodTypesCursor:extendedMethodTypesCursor])
             [protocol addInstanceMethod:method];
         
-        for (CDOCMethod *method in [self loadMethodsAtAddress:objc2Protocol.classMethods])
+        for (CDOCMethod *method in [self loadMethodsAtAddress:objc2Protocol.classMethods extendedMethodTypesCursor:extendedMethodTypesCursor])
             [protocol addClassMethod:method];
         
-        for (CDOCMethod *method in [self loadMethodsAtAddress:objc2Protocol.optionalInstanceMethods])
+        for (CDOCMethod *method in [self loadMethodsAtAddress:objc2Protocol.optionalInstanceMethods extendedMethodTypesCursor:extendedMethodTypesCursor])
             [protocol addOptionalInstanceMethod:method];
         
-        for (CDOCMethod *method in [self loadMethodsAtAddress:objc2Protocol.optionalClassMethods])
+        for (CDOCMethod *method in [self loadMethodsAtAddress:objc2Protocol.optionalClassMethods extendedMethodTypesCursor:extendedMethodTypesCursor])
             [protocol addOptionalClassMethod:method];
         
         for (CDOCProperty *property in [self loadPropertiesAtAddress:objc2Protocol.instanceProperties])
@@ -280,7 +293,7 @@
         
         listHeader.entsize = [cursor readInt32];
         listHeader.count = [cursor readInt32];
-        NSParameterAssert(listHeader.entsize == ([self.machOFile uses64BitABI] ? 16 : 8));
+        NSParameterAssert(listHeader.entsize == 2 * [self.machOFile ptrSize]);
         
         for (uint32_t index = 0; index < listHeader.count; index++) {
             struct cd_objc2_property objc2Property;
@@ -344,6 +357,11 @@
 
 - (NSArray *)loadMethodsAtAddress:(uint64_t)address;
 {
+    return [self loadMethodsAtAddress:address extendedMethodTypesCursor:nil];
+}
+
+- (NSArray *)loadMethodsAtAddress:(uint64_t)address extendedMethodTypesCursor:(CDMachOFileDataCursor *)extendedMethodTypesCursor;
+{
     NSMutableArray *methods = [NSMutableArray array];
     
     if (address != 0) {
@@ -353,9 +371,10 @@
         
         struct cd_objc2_list_header listHeader;
         
-        listHeader.entsize = [cursor readInt32];
+        // See getEntsize() from http://www.opensource.apple.com/source/objc4/objc4-532.2/runtime/objc-runtime-new.h
+        listHeader.entsize = [cursor readInt32] & ~(uint32_t)3;
         listHeader.count   = [cursor readInt32];
-        NSParameterAssert(listHeader.entsize == ([self.machOFile uses64BitABI] ? 24 : 12));
+        NSParameterAssert(listHeader.entsize == 3 * [self.machOFile ptrSize]);
         
         for (uint32_t index = 0; index < listHeader.count; index++) {
             struct cd_objc2_method objc2Method;
@@ -365,6 +384,11 @@
             objc2Method.imp   = [cursor readPtr];
             NSString *name    = [self.machOFile stringAtAddress:objc2Method.name];
             NSString *types   = [self.machOFile stringAtAddress:objc2Method.types];
+            
+            if (extendedMethodTypesCursor) {
+                uint64_t extendedMethodTypes = [extendedMethodTypesCursor readPtr];
+                types = [self.machOFile stringAtAddress:extendedMethodTypes];
+            }
             
             //NSLog(@"%3u: %016lx %016lx %016lx", index, objc2Method.name, objc2Method.types, objc2Method.imp);
             //NSLog(@"name: %@", name);
@@ -391,7 +415,7 @@
         
         listHeader.entsize = [cursor readInt32];
         listHeader.count = [cursor readInt32];
-        NSParameterAssert(listHeader.entsize == ([self.machOFile uses64BitABI] ? 32 : 20));
+        NSParameterAssert(listHeader.entsize == 3 * [self.machOFile ptrSize] + 2 * sizeof(uint32_t));
         
         for (uint32_t index = 0; index < listHeader.count; index++) {
             struct cd_objc2_ivar objc2Ivar;
@@ -406,7 +430,7 @@
                 NSString *name       = [self.machOFile stringAtAddress:objc2Ivar.name];
                 NSString *typeString = [self.machOFile stringAtAddress:objc2Ivar.type];
                 CDMachOFileDataCursor *offsetCursor = [[CDMachOFileDataCursor alloc] initWithFile:self.machOFile address:objc2Ivar.offset];
-                NSUInteger offset = [offsetCursor readPtr];
+                NSUInteger offset = (uint32_t)[offsetCursor readPtr]; // objc-runtime-new.h: "offset is 64-bit by accident" => restrict to 32-bit
                 
                 CDOCInstanceVariable *ivar = [[CDOCInstanceVariable alloc] initWithName:name typeString:typeString offset:offset];
                 [ivars addObject:ivar];

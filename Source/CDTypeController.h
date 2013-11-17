@@ -1,7 +1,7 @@
 // -*- mode: ObjC -*-
 
 //  This file is part of class-dump, a utility for examining the Objective-C segment of Mach-O files.
-//  Copyright (C) 1997-1998, 2000-2001, 2004-2012 Steve Nygard.
+//  Copyright (C) 1997-1998, 2000-2001, 2004-2013 Steve Nygard.
 
 @protocol CDTypeControllerDelegate;
 
@@ -21,6 +21,9 @@
 @property (nonatomic, readonly) BOOL shouldShowIvarOffsets;
 @property (nonatomic, readonly) BOOL shouldShowMethodAddresses;
 @property (nonatomic, readonly) BOOL targetArchUses64BitABI;
+
+@property (nonatomic, assign) BOOL hasUnknownFunctionPointers;
+@property (nonatomic, assign) BOOL hasUnknownBlocks;
 
 - (CDType *)typeFormatter:(CDTypeFormatter *)typeFormatter replacementForType:(CDType *)type;
 - (NSString *)typeFormatter:(CDTypeFormatter *)typeFormatter typedefNameForStructure:(CDType *)structureType level:(NSUInteger)level;
