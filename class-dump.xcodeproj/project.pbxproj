@@ -291,9 +291,6 @@
 
 /* Begin PBXFileReference section */
 		011E483F1604DF3700722F8D /* SenTestingKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SenTestingKit.framework; path = Library/Frameworks/SenTestingKit.framework; sourceTree = DEVELOPER_DIR; };
-		011E48491604DF3700722F8D /* UnitTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "UnitTests-Info.plist"; sourceTree = "<group>"; };
-		011E484B1604DF3700722F8D /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
-		011E484D1604DF3700722F8D /* TestCDNameForCPUType.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TestCDNameForCPUType.h; sourceTree = "<group>"; };
 		011E48411604DF3700722F8D /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = Library/Frameworks/Cocoa.framework; sourceTree = DEVELOPER_DIR; };
 		011E48441604DF3700722F8D /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = Library/Frameworks/AppKit.framework; sourceTree = SDKROOT; };
 		011E48451604DF3700722F8D /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
@@ -719,7 +716,6 @@
 				013D1EFB13A5A0F100BF0A67 /* deprotect */,
 				013D1F1113A5AE5A00BF0A67 /* libMachObjC.a */,
 				01B02CFF13A5B0DC0047BC53 /* formatType */,
-				011E483E1604DF3700722F8D /* UnitTests.octest */,
 				6DCC313617AD24E7000E4A23 /* ClassDump.framework */,
 				6DEA959C17AD872C002D079A /* com.ddeville.classdumpservice.xpc */,
 				0165B8B11827137D00CC647F /* UnitTests.xctest */,
@@ -1231,7 +1227,7 @@
 		01EB825613A590D9003EDE60 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 0500;
+				LastUpgradeCheck = 0510;
 				ORGANIZATIONNAME = "Damien DeVille";
 				TargetAttributes = {
 					6DEA959B17AD872C002D079A = {
@@ -1639,6 +1635,7 @@
 				CLANG_ENABLE_OBJC_ARC = YES;
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				COMBINE_HIDPI_IMAGES = YES;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(DEVELOPER_FRAMEWORKS_DIR)",
 					"$(inherited)",
@@ -1670,6 +1667,7 @@
 				CLANG_ENABLE_OBJC_ARC = YES;
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				COMBINE_HIDPI_IMAGES = YES;
 				ENABLE_NS_ASSERTIONS = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(DEVELOPER_FRAMEWORKS_DIR)",
@@ -1742,7 +1740,6 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
-				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
 				CLANG_WARN_BOOL_CONVERSION = YES;
 				CLANG_WARN_CONSTANT_CONVERSION = YES;
 				CLANG_WARN_EMPTY_BODY = YES;
@@ -1776,7 +1773,6 @@
 					"-fdiagnostics-show-option",
 					"-Wno-semicolon-before-method-body",
 					"-Wno-c11-extensions",
-					"-Wno-readonly-setter-attrs",
 					"-Wno-overriding-method-mismatch",
 					"-Wno-unused-function",
 					"-Wno-unused-macros",
@@ -1791,7 +1787,6 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
-				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
 				CLANG_WARN_BOOL_CONVERSION = YES;
 				CLANG_WARN_CONSTANT_CONVERSION = YES;
 				CLANG_WARN_EMPTY_BODY = YES;
@@ -1818,7 +1813,6 @@
 					"-fdiagnostics-show-option",
 					"-Wno-semicolon-before-method-body",
 					"-Wno-c11-extensions",
-					"-Wno-readonly-setter-attrs",
 					"-Wno-overriding-method-mismatch",
 					"-Wno-unused-function",
 					"-Wno-unused-macros",
