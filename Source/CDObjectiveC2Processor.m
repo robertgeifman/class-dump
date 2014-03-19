@@ -1,7 +1,7 @@
 // -*- mode: ObjC -*-
 
 //  This file is part of class-dump, a utility for examining the Objective-C segment of Mach-O files.
-//  Copyright (C) 1997-1998, 2000-2001, 2004-2013 Steve Nygard.
+//  Copyright (C) 1997-1998, 2000-2001, 2004-2014 Steve Nygard.
 
 #import "CDObjectiveC2Processor.h"
 
@@ -19,6 +19,7 @@
 #import "CDOCProperty.h"
 #import "cd_objc2.h"
 #import "CDProtocolUniquer.h"
+#import "CDOCClassReference.h"
 
 @implementation CDObjectiveC2Processor
 {
@@ -174,15 +175,24 @@
     {
         uint64_t classNameAddress = address + [self.machOFile ptrSize];
         
+        NSString *externalClassName = nil;
         if ([self.machOFile hasRelocationEntryForAddress2:classNameAddress]) {
-            [category setClassName:[self.machOFile externalClassNameForAddress2:classNameAddress]];
+            externalClassName = [self.machOFile externalClassNameForAddress2:classNameAddress];
             //NSLog(@"category: got external class name (2): %@", [category className]);
         } else if ([self.machOFile hasRelocationEntryForAddress:classNameAddress]) {
-            [category setClassName:[self.machOFile externalClassNameForAddress:classNameAddress]];
+            externalClassName = [self.machOFile externalClassNameForAddress:classNameAddress];
             //NSLog(@"category: got external class name (1): %@", [aClass className]);
         } else if (objc2Category.class != 0) {
             CDOCClass *aClass = [self classWithAddress:objc2Category.class];
-            [category setClassName:[aClass name]];
+            category.classRef = [[CDOCClassReference alloc] initWithClassObject:aClass];
+        }
+        
+        if (externalClassName != nil) {
+            CDSymbol *classSymbol = [[self.machOFile symbolTable] symbolForExternalClassName:externalClassName];
+            if (classSymbol != nil)
+                category.classRef = [[CDOCClassReference alloc] initWithClassSymbol:classSymbol];
+            else
+                category.classRef = [[CDOCClassReference alloc] initWithClassName:externalClassName];
         }
     }
     
@@ -193,6 +203,10 @@
 {
     if (address == 0)
         return nil;
+    
+    CDOCClass *class = [self classWithAddress:address];
+    if (class)
+        return class;
     
     //NSLog(@"%s, address=%016lx", __cmd, address);
     
@@ -256,15 +270,24 @@
     {
         uint64_t classNameAddress = address + [self.machOFile ptrSize];
         
+        NSString *superClassName = nil;
         if ([self.machOFile hasRelocationEntryForAddress2:classNameAddress]) {
-            [aClass setSuperClassName:[self.machOFile externalClassNameForAddress2:classNameAddress]];
+            superClassName = [self.machOFile externalClassNameForAddress2:classNameAddress];
             //NSLog(@"class: got external class name (2): %@", [aClass superClassName]);
         } else if ([self.machOFile hasRelocationEntryForAddress:classNameAddress]) {
-            [aClass setSuperClassName:[self.machOFile externalClassNameForAddress:classNameAddress]];
+            superClassName = [self.machOFile externalClassNameForAddress:classNameAddress];
             //NSLog(@"class: got external class name (1): %@", [aClass superClassName]);
         } else if (objc2Class.superclass != 0) {
             CDOCClass *sc = [self loadClassAtAddress:objc2Class.superclass];
-            [aClass setSuperClassName:[sc name]];
+            aClass.superClassRef = [[CDOCClassReference alloc] initWithClassObject:sc];
+        }
+        
+        if (superClassName) {
+            CDSymbol *superClassSymbol = [[self.machOFile symbolTable] symbolForExternalClassName:superClassName];
+            if (superClassSymbol)
+                aClass.superClassRef = [[CDOCClassReference alloc] initWithClassSymbol:superClassSymbol];
+            else
+                aClass.superClassRef = [[CDOCClassReference alloc] initWithClassName:superClassName];
         }
     }
     

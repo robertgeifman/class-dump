@@ -1,7 +1,7 @@
 // -*- mode: ObjC -*-
 
 //  This file is part of class-dump, a utility for examining the Objective-C segment of Mach-O files.
-//  Copyright (C) 1997-1998, 2000-2001, 2004-2013 Steve Nygard.
+//  Copyright (C) 1997-1998, 2000-2001, 2004-2014 Steve Nygard.
 
 #import "CDFile.h"
 
@@ -9,6 +9,23 @@
 #import "CDFatFile.h"
 #import "CDMachOFile.h"
 #import "CDSearchPathState.h"
+
+NSString *CDImportNameForPath(NSString *path)
+{
+    NSString *name = [path lastPathComponent];
+    
+    // Remove all extensions (make sure extensions like .a.dylib are covered)
+    NSString *nameWithExtensions = name;
+    for (NSInteger i = ([nameWithExtensions length] - 1); i >= 0; i--) {
+        if ([nameWithExtensions characterAtIndex:i] == '.')
+            name = [name substringToIndex:i];
+    }
+    
+    NSString *libPrefix = @"lib";
+    if ([name hasPrefix:libPrefix])
+        name = [name substringFromIndex:[libPrefix length]];
+    return name;
+}
 
 NSString *CDNameForCPUType(cpu_type_t cputype, cpu_subtype_t cpusubtype)
 {

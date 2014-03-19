@@ -87,7 +87,6 @@
 		013D1F5413A5AEA100BF0A67 /* CDTypeName.m in Sources */ = {isa = PBXBuildFile; fileRef = 01EB831913A591D8003EDE60 /* CDTypeName.m */; };
 		013D1F5513A5AEA100BF0A67 /* CDTypeParser.m in Sources */ = {isa = PBXBuildFile; fileRef = 01EB831B13A591D8003EDE60 /* CDTypeParser.m */; };
 		013D1F5613A5AF1E00BF0A67 /* libMachObjC.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 013D1F1113A5AE5A00BF0A67 /* libMachObjC.a */; };
-		013D1F5713A5AF3400BF0A67 /* libcrypto.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 013D1F0B13A5ADC300BF0A67 /* libcrypto.dylib */; };
 		013D1F5813A5AF4C00BF0A67 /* deprotect.m in Sources */ = {isa = PBXBuildFile; fileRef = 013D1F0913A5A11100BF0A67 /* deprotect.m */; };
 		013D1F5A13A5AF6500BF0A67 /* libMachObjC.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 013D1F1113A5AE5A00BF0A67 /* libMachObjC.a */; };
 		0165B8B31827137D00CC647F /* XCTest.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0165B8B21827137D00CC647F /* XCTest.framework */; };
@@ -134,6 +133,8 @@
 		01B02D2D13A5B57E0047BC53 /* libcrypto.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 013D1F0B13A5ADC300BF0A67 /* libcrypto.dylib */; };
 		01B02D3A13A5B72B0047BC53 /* libcrypto.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 013D1F0B13A5ADC300BF0A67 /* libcrypto.dylib */; };
 		01EB826413A590D9003EDE60 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 01EB826313A590D9003EDE60 /* Foundation.framework */; };
+		0D288C10187BC2EE0026E2A0 /* CDOCClassReference.h in Headers */ = {isa = PBXBuildFile; fileRef = 0D288C0E187BC2EE0026E2A0 /* CDOCClassReference.h */; };
+		0D288C11187BC2EE0026E2A0 /* CDOCClassReference.m in Sources */ = {isa = PBXBuildFile; fileRef = 0D288C0F187BC2EE0026E2A0 /* CDOCClassReference.m */; };
 		6D60A96C17AD28440015E6A6 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 01EB826313A590D9003EDE60 /* Foundation.framework */; };
 		6D688EA017AD2DFD00E4E588 /* CDClassDumpOperation.h in Headers */ = {isa = PBXBuildFile; fileRef = 6D688E9E17AD2DFD00E4E588 /* CDClassDumpOperation.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		6DC9717317AD9B8800275B58 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 6DC9717517AD9B8800275B58 /* InfoPlist.strings */; };
@@ -291,9 +292,6 @@
 
 /* Begin PBXFileReference section */
 		011E483F1604DF3700722F8D /* SenTestingKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SenTestingKit.framework; path = Library/Frameworks/SenTestingKit.framework; sourceTree = DEVELOPER_DIR; };
-		011E48491604DF3700722F8D /* UnitTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "UnitTests-Info.plist"; sourceTree = "<group>"; };
-		011E484B1604DF3700722F8D /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
-		011E484D1604DF3700722F8D /* TestCDNameForCPUType.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TestCDNameForCPUType.h; sourceTree = "<group>"; };
 		011E48411604DF3700722F8D /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = Library/Frameworks/Cocoa.framework; sourceTree = DEVELOPER_DIR; };
 		011E48441604DF3700722F8D /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = Library/Frameworks/AppKit.framework; sourceTree = SDKROOT; };
 		011E48451604DF3700722F8D /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
@@ -484,6 +482,8 @@
 		01EB831E13A591D8003EDE60 /* CDVisitor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CDVisitor.m; path = Source/CDVisitor.m; sourceTree = SOURCE_ROOT; };
 		01EB831F13A591D8003EDE60 /* CDVisitorPropertyState.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CDVisitorPropertyState.h; path = Source/CDVisitorPropertyState.h; sourceTree = SOURCE_ROOT; };
 		01EB832013A591D8003EDE60 /* CDVisitorPropertyState.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CDVisitorPropertyState.m; path = Source/CDVisitorPropertyState.m; sourceTree = SOURCE_ROOT; };
+		0D288C0E187BC2EE0026E2A0 /* CDOCClassReference.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CDOCClassReference.h; path = Source/CDOCClassReference.h; sourceTree = "<group>"; };
+		0D288C0F187BC2EE0026E2A0 /* CDOCClassReference.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CDOCClassReference.m; path = Source/CDOCClassReference.m; sourceTree = "<group>"; };
 		6D688E9E17AD2DFD00E4E588 /* CDClassDumpOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CDClassDumpOperation.h; path = Framework/CDClassDumpOperation.h; sourceTree = SOURCE_ROOT; usesTabs = 0; };
 		6D688E9F17AD2DFD00E4E588 /* CDClassDumpOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CDClassDumpOperation.m; path = Framework/CDClassDumpOperation.m; sourceTree = SOURCE_ROOT; usesTabs = 0; };
 		6DC9717417AD9B8800275B58 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
@@ -530,7 +530,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				013D1F5713A5AF3400BF0A67 /* libcrypto.dylib in Frameworks */,
 				DA7533B213AA587A003BE32C /* Foundation.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -719,7 +718,6 @@
 				013D1EFB13A5A0F100BF0A67 /* deprotect */,
 				013D1F1113A5AE5A00BF0A67 /* libMachObjC.a */,
 				01B02CFF13A5B0DC0047BC53 /* formatType */,
-				011E483E1604DF3700722F8D /* UnitTests.octest */,
 				6DCC313617AD24E7000E4A23 /* ClassDump.framework */,
 				6DEA959C17AD872C002D079A /* com.ddeville.classdumpservice.xpc */,
 				0165B8B11827137D00CC647F /* UnitTests.xctest */,
@@ -896,6 +894,8 @@
 		01EB836913A593C7003EDE60 /* Objective-C */ = {
 			isa = PBXGroup;
 			children = (
+				0D288C0E187BC2EE0026E2A0 /* CDOCClassReference.h */,
+				0D288C0F187BC2EE0026E2A0 /* CDOCClassReference.m */,
 				01EB831F13A591D8003EDE60 /* CDVisitorPropertyState.h */,
 				01EB832013A591D8003EDE60 /* CDVisitorPropertyState.m */,
 				01EB82E913A591D8003EDE60 /* CDOCCategory.h */,
@@ -1073,6 +1073,7 @@
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0D288C10187BC2EE0026E2A0 /* CDOCClassReference.h in Headers */,
 				0168C98713E4AB3200926EC3 /* CDLCFunctionStarts.h in Headers */,
 				018BFD4214F65DB600190F07 /* CDExtensions.h in Headers */,
 				0179B9E614F2025E00EC98F7 /* CDLCMain.h in Headers */,
@@ -1231,7 +1232,7 @@
 		01EB825613A590D9003EDE60 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 0500;
+				LastUpgradeCheck = 0510;
 				ORGANIZATIONNAME = "Damien DeVille";
 				TargetAttributes = {
 					6DEA959B17AD872C002D079A = {
@@ -1376,6 +1377,7 @@
 				013D1F4713A5AEA100BF0A67 /* CDOCCategory.m in Sources */,
 				013D1F4813A5AEA100BF0A67 /* CDOCClass.m in Sources */,
 				013D1F4913A5AEA100BF0A67 /* CDOCInstanceVariable.m in Sources */,
+				0D288C11187BC2EE0026E2A0 /* CDOCClassReference.m in Sources */,
 				013D1F4A13A5AEA100BF0A67 /* CDOCMethod.m in Sources */,
 				013D1F4B13A5AEA100BF0A67 /* CDOCModule.m in Sources */,
 				013D1F4C13A5AEA100BF0A67 /* CDOCProperty.m in Sources */,
@@ -1639,6 +1641,7 @@
 				CLANG_ENABLE_OBJC_ARC = YES;
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				COMBINE_HIDPI_IMAGES = YES;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(DEVELOPER_FRAMEWORKS_DIR)",
 					"$(inherited)",
@@ -1670,6 +1673,7 @@
 				CLANG_ENABLE_OBJC_ARC = YES;
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				COMBINE_HIDPI_IMAGES = YES;
 				ENABLE_NS_ASSERTIONS = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(DEVELOPER_FRAMEWORKS_DIR)",
@@ -1742,7 +1746,6 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
-				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
 				CLANG_WARN_BOOL_CONVERSION = YES;
 				CLANG_WARN_CONSTANT_CONVERSION = YES;
 				CLANG_WARN_EMPTY_BODY = YES;
@@ -1776,7 +1779,6 @@
 					"-fdiagnostics-show-option",
 					"-Wno-semicolon-before-method-body",
 					"-Wno-c11-extensions",
-					"-Wno-readonly-setter-attrs",
 					"-Wno-overriding-method-mismatch",
 					"-Wno-unused-function",
 					"-Wno-unused-macros",
@@ -1791,7 +1793,6 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
-				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
 				CLANG_WARN_BOOL_CONVERSION = YES;
 				CLANG_WARN_CONSTANT_CONVERSION = YES;
 				CLANG_WARN_EMPTY_BODY = YES;
@@ -1818,7 +1819,6 @@
 					"-fdiagnostics-show-option",
 					"-Wno-semicolon-before-method-body",
 					"-Wno-c11-extensions",
-					"-Wno-readonly-setter-attrs",
 					"-Wno-overriding-method-mismatch",
 					"-Wno-unused-function",
 					"-Wno-unused-macros",

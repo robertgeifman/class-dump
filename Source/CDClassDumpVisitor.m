@@ -1,7 +1,7 @@
 // -*- mode: ObjC -*-
 
 //  This file is part of class-dump, a utility for examining the Objective-C segment of Mach-O files.
-//  Copyright (C) 1997-1998, 2000-2001, 2004-2013 Steve Nygard.
+//  Copyright (C) 1997-1998, 2000-2001, 2004-2014 Steve Nygard.
 
 #import "CDClassDumpVisitor.h"
 
@@ -48,7 +48,9 @@
     [self.resultString appendString:@"#pragma mark -\n\n"];
     [self.resultString appendString:@"//\n"];
     [self.resultString appendFormat:@"// File: %@\n", machOFile.filename];
-    [self.resultString appendFormat:@"// UUID: %@\n", machOFile.uuidString];
+    if (machOFile.UUID != nil) {
+        [self.resultString appendFormat:@"// UUID: %@\n", [machOFile.UUID UUIDString]];
+    }
     [self.resultString appendString:@"//\n"];
     [self.resultString appendFormat:@"//                           Arch: %@\n", CDNameForCPUType(machOFile.cputype, machOFile.cpusubtype)];
 

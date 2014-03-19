@@ -1,7 +1,7 @@
 // -*- mode: ObjC -*-
 
 //  This file is part of class-dump, a utility for examining the Objective-C segment of Mach-O files.
-//  Copyright (C) 1997-1998, 2000-2001, 2004-2013 Steve Nygard.
+//  Copyright (C) 1997-1998, 2000-2001, 2004-2014 Steve Nygard.
 
 @protocol CDTypeControllerDelegate;
 
@@ -28,6 +28,7 @@
 - (CDType *)typeFormatter:(CDTypeFormatter *)typeFormatter replacementForType:(CDType *)type;
 - (NSString *)typeFormatter:(CDTypeFormatter *)typeFormatter typedefNameForStructure:(CDType *)structureType level:(NSUInteger)level;
 - (void)typeFormatter:(CDTypeFormatter *)typeFormatter didReferenceClassName:(NSString *)name;
+- (void)typeFormatter:(CDTypeFormatter *)typeFormatter didReferenceProtocolNames:(NSArray *)names;
 
 - (void)appendStructuresToString:(NSMutableString *)resultString;
 
@@ -58,4 +59,5 @@
 @protocol CDTypeControllerDelegate <NSObject>
 @optional
 - (void)typeController:(CDTypeController *)typeController didReferenceClassName:(NSString *)name;
+- (void)typeController:(CDTypeController *)typeController didReferenceProtocolNames:(NSArray *)names;
 @end

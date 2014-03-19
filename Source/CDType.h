@@ -1,15 +1,15 @@
 // -*- mode: ObjC -*-
 
 //  This file is part of class-dump, a utility for examining the Objective-C segment of Mach-O files.
-//  Copyright (C) 1997-1998, 2000-2001, 2004-2013 Steve Nygard.
+//  Copyright (C) 1997-1998, 2000-2001, 2004-2014 Steve Nygard.
 
 @class CDTypeController, CDTypeFormatter, CDTypeName;
 
 @interface CDType : NSObject <NSCopying>
 
-- (id)init;
 - (id)initSimpleType:(int)type;
 - (id)initIDType:(CDTypeName *)name;
+- (id)initIDType:(CDTypeName *)name withProtocols:(NSArray *)protocols;
 - (id)initIDTypeWithProtocols:(NSArray *)protocols;
 - (id)initStructType:(CDTypeName *)name members:(NSArray *)members;
 - (id)initUnionType:(CDTypeName *)name members:(NSArray *)members;
