@@ -729,6 +729,11 @@
 		01EB826513A590D9003EDE60 /* class-dump */ = {
 			isa = PBXGroup;
 			children = (
+				01B02D1B13A5B2A40047BC53 /* class-dump-Prefix.pch */,
+				01B02D4913A5B9090047BC53 /* Info.plist */,
+				01EB829913A591D7003EDE60 /* CDClassDump.h */,
+				01EB829A13A591D7003EDE60 /* CDClassDump.m */,
+				011F1D6214F8EB9F00CF8AE2 /* Structure / Union handling */,
 				6D688E9D17AD2DA600E4E588 /* Shared */,
 				6D688E9B17AD2D3500E4E588 /* CLI */,
 				6DCC313817AD24E7000E4A23 /* Framework */,
@@ -931,7 +936,6 @@
 		6D688E9C17AD2D7E00E4E588 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
-				01B02D4913A5B9090047BC53 /* Info.plist */,
 			);
 			name = "Supporting Files";
 			sourceTree = "<group>";
@@ -939,10 +943,6 @@
 		6D688E9D17AD2DA600E4E588 /* Shared */ = {
 			isa = PBXGroup;
 			children = (
-				01B02D1B13A5B2A40047BC53 /* class-dump-Prefix.pch */,
-				01EB829913A591D7003EDE60 /* CDClassDump.h */,
-				01EB829A13A591D7003EDE60 /* CDClassDump.m */,
-				011F1D6214F8EB9F00CF8AE2 /* Structure / Union handling */,
 				01984AC013AA9EA900EABFF6 /* Visitors */,
 				01EB82FB13A591D8003EDE60 /* CDSearchPathState.h */,
 				01EB82FC13A591D8003EDE60 /* CDSearchPathState.m */,
@@ -1212,7 +1212,7 @@
 		01EB825613A590D9003EDE60 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 0510;
+				LastUpgradeCheck = 0720;
 				ORGANIZATIONNAME = "Damien DeVille";
 				TargetAttributes = {
 					6DEA959B17AD872C002D079A = {
@@ -1636,6 +1636,7 @@
 					"-all_load",
 					"-ObjC",
 				);
+				PRODUCT_BUNDLE_IDENTIFIER = "com.stevenygard.${PRODUCT_NAME:rfc1034identifier}";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = xctest;
 			};
@@ -1669,6 +1670,7 @@
 					"___info_plist",
 					Info.plist,
 				);
+				PRODUCT_BUNDLE_IDENTIFIER = "com.stevenygard.${PRODUCT_NAME:rfc1034identifier}";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = xctest;
 			};
@@ -1728,11 +1730,15 @@
 				CLANG_WARN_ENUM_CONVERSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN_OBJC_MISSING_PROPERTY_SYNTHESIS = NO;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
+				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"DEBUG=1",
@@ -1775,11 +1781,14 @@
 				CLANG_WARN_ENUM_CONVERSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN_OBJC_MISSING_PROPERTY_SYNTHESIS = NO;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = YES;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
+				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
@@ -1853,7 +1862,6 @@
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(DEVELOPER_FRAMEWORKS_DIR)",
-					"$(DEVELOPER_DIR)/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.9.sdk/System/Library/Frameworks",
 				);
 				FRAMEWORK_VERSION = A;
 				GCC_PREPROCESSOR_DEFINITIONS = (
@@ -1863,15 +1871,13 @@
 				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
 				INFOPLIST_FILE = Framework/Info.plist;
 				INSTALL_PATH = "@rpath/";
-				LIBRARY_SEARCH_PATHS = (
-					"$(inherited)",
-					"$(DEVELOPER_DIR)/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.9.sdk/usr/lib",
-				);
+				LIBRARY_SEARCH_PATHS = "$(inherited)";
 				MACOSX_DEPLOYMENT_TARGET = 10.8;
 				OTHER_LDFLAGS = (
 					"-all_load",
 					"-ObjC",
 				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.ddeville.classdump;
 				PRODUCT_NAME = ClassDump;
 				SKIP_INSTALL = YES;
 				WRAPPER_EXTENSION = framework;
@@ -1896,21 +1902,18 @@
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(DEVELOPER_FRAMEWORKS_DIR)",
-					"$(DEVELOPER_DIR)/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.9.sdk/System/Library/Frameworks",
 				);
 				FRAMEWORK_VERSION = A;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
 				INFOPLIST_FILE = Framework/Info.plist;
 				INSTALL_PATH = "@rpath/";
-				LIBRARY_SEARCH_PATHS = (
-					"$(inherited)",
-					"$(DEVELOPER_DIR)/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.9.sdk/usr/lib",
-				);
+				LIBRARY_SEARCH_PATHS = "$(inherited)";
 				MACOSX_DEPLOYMENT_TARGET = 10.8;
 				OTHER_LDFLAGS = (
 					"-all_load",
 					"-ObjC",
 				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.ddeville.classdump;
 				PRODUCT_NAME = ClassDump;
 				SKIP_INSTALL = YES;
 				WRAPPER_EXTENSION = framework;
@@ -1943,6 +1946,7 @@
 					"-all_load",
 					"-ObjC",
 				);
+				PRODUCT_BUNDLE_IDENTIFIER = "${PRODUCT_NAME}";
 				PRODUCT_NAME = com.ddeville.classdumpservice;
 				SKIP_INSTALL = YES;
 				WRAPPER_EXTENSION = xpc;
@@ -1972,6 +1976,7 @@
 					"-all_load",
 					"-ObjC",
 				);
+				PRODUCT_BUNDLE_IDENTIFIER = "${PRODUCT_NAME}";
 				PRODUCT_NAME = com.ddeville.classdumpservice;
 				SKIP_INSTALL = YES;
 				WRAPPER_EXTENSION = xpc;
