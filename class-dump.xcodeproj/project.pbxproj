@@ -1212,7 +1212,7 @@
 		01EB825613A590D9003EDE60 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 0720;
+				LastUpgradeCheck = 0730;
 				ORGANIZATIONNAME = "Damien DeVille";
 				TargetAttributes = {
 					6DEA959B17AD872C002D079A = {
